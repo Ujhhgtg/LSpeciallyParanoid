@@ -11,8 +11,26 @@ import org.gradle.api.tasks.*
 import org.gradle.process.ExecOperations
 import org.gradle.work.DisableCachingByDefault
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.security.SecureRandom
 import javax.inject.Inject
+
+@DisableCachingByDefault(because = "Checks an external toolchain before protected variant tasks run")
+abstract class ValidateNativeToolchainTask : DefaultTask() {
+    @get:Input abstract val pluginPath: Property<String>
+    @get:Input @get:Optional abstract val pythonPath: Property<String>
+
+    @TaskAction fun validate() {
+        require(File(pluginPath.get()).isFile) {
+            "Native protection requires O-MVLL for native string encoding. Run tools/setup-native-toolchain.py " +
+                "or configure lsparanoid.omvllPlugin and omvllPythonPath. Missing: ${pluginPath.get()}"
+        }
+        if (pythonPath.isPresent) require(File(pythonPath.get(), "encodings/__init__.py").isFile) {
+            "Native protection requires the configured O-MVLL Python standard library. Run tools/setup-native-toolchain.py " +
+                "or correct lsparanoid.omvllPythonPath: ${pythonPath.get()}"
+        }
+    }
+}
 
 @DisableCachingByDefault(because = "Each native build intentionally uses fresh entropy")
 abstract class NativeEntropyTask : DefaultTask() {
@@ -81,6 +99,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         require(input.resolve("verification-required.txt").isFile && input.resolve("guard_policy.h").isFile) {
             "Refusing to compile a native codec fixture without APK/runtime verification policy"
         }
+        require(omvllPlugin.isPresent) { "Native string encoding requires O-MVLL; unprotected native compilation is not supported" }
         require(System.getProperty("os.name").lowercase().contains("linux")) {
             "Native protection currently supports Linux build hosts only"
         }
@@ -103,11 +122,13 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         arguments += input.walkTopDown().filter { it.isFile && it.extension == "c" }.sortedBy { it.path }.map { it.absolutePath }.toList()
         arguments += listOf("-lz", "-ldl")
         val environment = mutableMapOf<String, String>()
+        val stringManifest = privateSymbols.resolve("native-string-literals.tsv")
         if (omvllPlugin.isPresent) {
             val config = input.resolve("omvll_config.py")
             require(config.isFile) { "Missing generated O-MVLL policy" }
             environment["OMVLL_CONFIG"] = config.absolutePath
             environment["PYTHONDONTWRITEBYTECODE"] = "1"
+            environment["LSP_NATIVE_STRING_MANIFEST"] = stringManifest.absolutePath
             environment["LD_LIBRARY_PATH"] = bin.parentFile.resolve("lib64").absolutePath
             if (omvllPythonPath.isPresent) environment["OMVLL_PYTHONPATH"] = omvllPythonPath.get().asFile.absolutePath
         }
@@ -136,11 +157,39 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
                     "O-MVLL selected $pass for $module but did not report applying it; see private pass logs"
                 }
             }
+            for (module in listOf("decoder.c", "runtime_guard.c", "apk_verify.c", "frida_guard.c")) {
+                check(compileLog.contains("LSP_OMVLL_SELECTED strings $module")) {
+                    "O-MVLL did not select native string encoding for $module"
+                }
+                val applied = Regex("\\[omvll::StringEncoding] Changes\\s+applied on module[^\\n]*${Regex.escape(module)}")
+                check(passLogs.any { applied.containsMatchIn(it) }) {
+                    "O-MVLL did not apply native string encoding for $module; see private pass logs"
+                }
+            }
         }
         val abiDir = out.resolve("arm64-v8a").apply { mkdirs() }
         val packaged = abiDir.resolve(library.name)
         library.copyTo(packaged, overwrite = true)
-        exec.exec { it.commandLine(bin.resolve("llvm-strip"), "--strip-unneeded", packaged) }.assertNormalExitValue()
+        exec.exec { it.commandLine(bin.resolve("llvm-strip"), "--strip-unneeded", "--remove-section=.comment", packaged) }.assertNormalExitValue()
+        check(stringManifest.isFile) { "Missing native string encoding manifest" }
+        val nativeStrings = stringManifest.readLines().map { line ->
+            val hex = line.substringAfter('\t')
+            hex.chunked(2).map { it.toInt(16).toByte() }.toByteArray().toString(Charsets.ISO_8859_1)
+        }.distinct()
+        val nativeBytes = packaged.readBytes().toString(Charsets.ISO_8859_1)
+        // Short fragments can coincide with instructions or encrypted payload bytes.
+        // Eight-byte literals are useful static-analysis clues and have negligible collision probability.
+        // Policy literals must be hidden even if a future compiler misses a table initializer.
+        val policyStrings = Regex("\"([^\"]+)\"").findAll(input.resolve("guard_policy.h").readText())
+            .map { it.groupValues[1] }.toList()
+        val auditedStrings = (nativeStrings + policyStrings).distinct().filter { it.length >= 8 }
+        check(auditedStrings.isNotEmpty()) { "Native string encoding selected no auditable literals" }
+        check(auditedStrings.none { it in nativeBytes }) {
+            "Selected native string plaintext survived obfuscation; inspect private native-string-literals.tsv"
+        }
+        check(listOf("LSP guard:", "android/app/ActivityThread", "APK Sig Block 42", "gum-js-loop").none { it in nativeBytes }) {
+            "A native guard marker survived string encoding"
+        }
         val exports = capture(listOf(bin.resolve("llvm-nm").absolutePath, "-D", "--defined-only", packaged.absolutePath))
         val exportedNames = exports.lineSequence().filter { it.isNotBlank() }.map { it.trim().split(Regex("\\s+")).last().substringBefore('@') }.toSet()
         require(exportedNames == setOf("JNI_OnLoad")) { "Unexpected native exports: $exportedNames" }
@@ -155,7 +204,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         val compiler = capture(listOf(clang.absolutePath, "--version"))
         report.get().asFile.apply {
             parentFile.mkdirs()
-            writeText("Library: ${packaged.name}\nABI: arm64-v8a\nMinimum API: ${minSdk.get()}\nO-MVLL: ${omvllPlugin.isPresent}\nVerification: APK-v2, pinned host, loaded ELF, Android runtime; failure=abort\nPackaged bytes: ${packaged.length()}\n$compiler\n$exports\n$elf")
+            writeText("Library: ${packaged.name}\nABI: arm64-v8a\nMinimum API: ${minSdk.get()}\nO-MVLL: ${omvllPlugin.isPresent}\nNative strings: encoded; ${auditedStrings.size} distinct literals of 8+ bytes audited\nVerification: APK-v2, pinned host, loaded ELF, Android runtime; failure=abort\nPackaged bytes: ${packaged.length()}\n$compiler\n$exports\n$elf")
         }
     }
 

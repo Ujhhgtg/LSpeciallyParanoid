@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -18,6 +19,8 @@ def main():
     parser.add_argument("--serial", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--mode", choices=("before", "late", "control"), required=True)
+    parser.add_argument("--omvll-plugin", type=Path, help="Also exercise the production O-MVLL policy")
+    parser.add_argument("--omvll-python", type=Path, help="Bundled Python standard-library directory")
     args = parser.parse_args()
     if not args.serial.startswith("emulator-"):
         parser.error("This fixture runner only operates on an explicitly selected emulator")
@@ -32,11 +35,23 @@ def main():
     if triple is None:
         parser.error("A native 64-bit Android emulator is required")
     guard = ROOT / "processor/src/main/resources/nativebackend/guard"
-    binary = args.output / "probe"
+    binary = args.output.resolve() / "probe"
     clang = args.ndk / "toolchains/llvm/prebuilt/linux-x86_64/bin" / (triple + "28-clang")
-    subprocess.run([str(clang), "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-I" + str(guard),
+    compiler = [str(clang), "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-I" + str(guard),
                     str(ROOT / "tools/frida/probe.c"), str(guard / "frida_guard.c"),
-                    "-Wl,-z,max-page-size=16384", "-ldl", "-o", str(binary)], check=True)
+                    "-Wl,-z,max-page-size=16384", "-ldl", "-o", str(binary)]
+    environment = os.environ.copy()
+    if args.omvll_plugin:
+        compiler.append("-fpass-plugin=" + str(args.omvll_plugin.resolve()))
+        environment["OMVLL_CONFIG"] = str(guard.parent / "omvll_config.py")
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        environment["LSP_NATIVE_STRING_MANIFEST"] = str(args.output.resolve() / "native-string-literals.tsv")
+        environment["LD_LIBRARY_PATH"] = str(clang.parent.parent / "lib64")
+        if args.omvll_python:
+            environment["OMVLL_PYTHONPATH"] = str(args.omvll_python.resolve())
+    compiled = subprocess.run(compiler, env=environment, capture_output=True, text=True, cwd=args.output.resolve())
+    (args.output / "compiler.log").write_text(compiled.stdout + compiled.stderr)
+    compiled.check_returncode()
     remote = "/data/local/tmp/lsp-frida-owned-probe"
     script = args.output / "probe.js"
     script.write_text("console.log('LSP_GADGET_STARTED'); setInterval(function () {}, 1000);\n")
@@ -65,6 +80,7 @@ def main():
         "gadget_sha256": hashlib.sha256(args.gadget.read_bytes()).hexdigest(),
         "guard_sha256": hashlib.sha256((guard / "frida_guard.c").read_bytes()).hexdigest(),
         "serial": args.serial, "abi": abi, "mode": args.mode,
+        "omvll": bool(args.omvll_plugin),
         "sdk": adb("shell", "getprop", "ro.build.version.sdk").stdout.strip(),
         "page_size": adb("shell", "getconf", "PAGESIZE").stdout.strip(),
         "outcome": outcome, "pid": pid, "exit_code": executed.returncode, "output": output,

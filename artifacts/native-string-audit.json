@@ -1,0 +1,18 @@
+[
+  {
+    "application": "fixture",
+    "library_sha256": "3ff2c6927872c63c6889625e0bbbb32aa7a589a4f5d2e4d3fa6d31a7bab849ae",
+    "audited_literals": 145,
+    "plaintext_matches": 0,
+    "guard_diagnostic_prefix_matches": 0,
+    "compiler_comment_removed": true
+  },
+  {
+    "application": "wekit",
+    "library_sha256": "ddefda5fa6410851131c7be1c8f3e90a3b872fa4fe649562cb1c0e920727e8b0",
+    "audited_literals": 146,
+    "plaintext_matches": 0,
+    "guard_diagnostic_prefix_matches": 0,
+    "compiler_comment_removed": true
+  }
+]

@@ -28,7 +28,9 @@ open class LSParanoidExtension {
     var backend: String = "jvm"
     var automaticLoading: Boolean = true
     var nativeNdkVersion: String = "29.0.14206865"
+    /** Required for protected native variants; null selects the pinned setup-tool installation. */
     var omvllPlugin: String? = null
+    /** Override for custom installations; the pinned default's bundled Python is selected automatically. */
     var omvllPythonPath: String? = null
     /** Optional explicit certificate pins; otherwise derived from this variant's signing keystore. */
     var signerCertificateSha256: Set<String> = emptySet()

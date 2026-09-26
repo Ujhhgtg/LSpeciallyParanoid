@@ -9,7 +9,7 @@ backend is the default; native protection is enabled explicitly.
 
 The native backend assigns separate authenticated ciphertext to every selected literal occurrence and
 resource item, rebuilds transformed class constant pools, and generates an AArch64 decoder registered
-through `JNI_OnLoad`. Each protected build invocation uses fresh random entropy. Optional O-MVLL
+through `JNI_OnLoad`. Each protected build invocation uses fresh random entropy. Required O-MVLL
 hardening targets selected decoder and verification functions. Native mode now requires APK signature,
 loaded-library integrity, approved-process identity and Android-runtime verification. Failed verification
 calls `abort()` immediately, including inside an injected host. Native mode also aborts when its
@@ -33,7 +33,7 @@ Make the plugin portal, Google Maven and Maven Central available in `settings.gr
 ```kotlin
 plugins {
     id("com.android.application")
-    id("dev.ujhhgtg.lsparanoid") version "0.13.1"
+    id("dev.ujhhgtg.lsparanoid") version "0.13.2"
 }
 
 android {
@@ -228,7 +228,7 @@ or route the read through the controlled boundary. Getter calls and Compose depe
 universally rewritten. Pseudolocalization must be disabled for protected variants because it changes
 tokens. See [the runtime contract](runtime/README.md) for details.
 
-## Optional O-MVLL
+## O-MVLL and native strings
 
 The generated policy flattens decoder lookup, AEAD authentication, guard initialization and APK
 verification, with arithmetic obfuscation on decoder lookup. BearSSL primitives remain unmodified.
@@ -244,6 +244,9 @@ python3 tools/setup-native-toolchain.py --sdk "$ANDROID_SDK_ROOT"
 
 Its default O-MVLL directory is `~/.local/share/lspeciallyparanoid/toolchains/omvll-1.9.1`.
 Use `--offline` for existing installations/cached archives. Ordinary Gradle builds never invoke setup.
+Protected native variants automatically select that plugin and its bundled Python. If either is
+unavailable, the build fails; it cannot silently ship the native guard's strings in plaintext.
+JVM and excluded/unprotected variants do not require O-MVLL. Custom installations can override:
 
 ```kotlin
 lsparanoid {
@@ -255,6 +258,18 @@ lsparanoid {
 Use the Python directory containing the bundled standard library (`encodings`, etc.). Compiler output
 must confirm the selected transforms; unavailable or incompatible hardening fails the build. Keep
 compiler/pass versions and release checksums with your build records.
+
+LSP's native diagnostics, JNI identifiers/signatures, policy names, APK-verifier text and Frida
+inspection strings use O-MVLL local string encoding. The existing flattening/arithmetic policy is
+unchanged. The build checks that string encoding ran in every owned native source module, then scans
+the stripped ELF for every selected literal and policy string of eight bytes or longer, plus specific
+guard markers. A surviving plaintext marker fails the build. Compiler `.comment` strings are removed.
+The private `native-string-literals.tsv` manifest and compiler logs contain native literals; keep them
+with private symbols, not release artifacts. Public reports contain counts only.
+
+Android's required dynamic symbols/library names, ELF metadata and standard cryptographic constants
+remain recognizable. This protects native text at rest; decoded strings can still be observed in a
+running process. See [validation notes](artifacts/native-strings.md).
 
 ## Reports, private build outputs and tests
 

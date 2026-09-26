@@ -85,8 +85,11 @@ class LSParanoidPlugin : Plugin<Project> {
             val resourceIncludes = extension.resourceIncludes.toSet()
             val resourceExcludes = extension.resourceExcludes.toSet()
             val wrappedResourceAccess = extension.wrappedResourceAccess
-            val omvllPlugin = extension.omvllPlugin
-            val omvllPythonPath = extension.omvllPythonPath
+            val defaultOmvll = project.providers.systemProperty("user.home").get() +
+                "/.local/share/lspeciallyparanoid/toolchains/omvll-1.9.1"
+            val omvllPlugin = extension.omvllPlugin ?: if (backend == "native") "$defaultOmvll/omvll-ndk.so" else null
+            val omvllPythonPath = extension.omvllPythonPath ?:
+                if (backend == "native" && extension.omvllPlugin == null) "$defaultOmvll/Python-3.10.7/Lib" else null
             val explicitSignerPins = extension.signerCertificateSha256.toSet()
             val hostCertificates = extension.allowedHostCertificates.mapValues { it.value.toList() }
             require(backend == "jvm" || backend == "native") { "lsparanoid.backend must be jvm or native" }
@@ -141,7 +144,12 @@ class LSParanoidPlugin : Plugin<Project> {
                     it.certificatePins.set(project.layout.buildDirectory.file("$base/public/signer-sha256.txt"))
                 }
                 transform.configure { it.signerPins.set(signer.flatMap { t -> t.certificatePins }) }
+                val toolchain = project.tasks.register("lspToolchain$capitalized", ValidateNativeToolchainTask::class.java) {
+                    it.pluginPath.set(omvllPlugin!!)
+                    omvllPythonPath?.let { path -> it.pythonPath.set(path) }
+                }
                 val entropy = project.tasks.register("lspEntropy$capitalized", NativeEntropyTask::class.java) {
+                    it.dependsOn(toolchain)
                     it.output.set(project.layout.buildDirectory.file("$base/private/entropy.bin"))
                 }
                 val bootstrap = project.tasks.register("lspBootstrap$capitalized", NativeBootstrapTask::class.java) {
