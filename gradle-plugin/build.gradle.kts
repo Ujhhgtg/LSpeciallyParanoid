@@ -12,14 +12,14 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
-group = "com.androidacy.lsparanoid"
+group = "dev.ujhhgtg.lsparanoid"
 version = rootProject.version
 
 gradlePlugin {
     plugins {
         create("lsparanoid") {
-            id = "com.androidacy.lsparanoid"
-            implementationClass = "com.androidacy.lsparanoid.plugin.LSParanoidPlugin"
+            id = "dev.ujhhgtg.lsparanoid"
+            implementationClass = "dev.ujhhgtg.lsparanoid.plugin.LSParanoidPlugin"
             displayName = "LSParanoid"
             description = "String obfuscator for Android applications"
         }
@@ -44,11 +44,11 @@ abstract class GenerateBuildClass : DefaultTask() {
 
     @TaskAction
     fun generate() {
-        val buildClassFile = outputDir.file("main/java/com/androidacy/lsparanoid/plugin/Build.java").get().asFile
+        val buildClassFile = outputDir.file("main/java/dev/ujhhgtg/lsparanoid/plugin/Build.java").get().asFile
         buildClassFile.parentFile.mkdirs()
         buildClassFile.writeText(
             """
-            package com.androidacy.lsparanoid.plugin;
+            package dev.ujhhgtg.lsparanoid.plugin;
             /**
              * The type Build.
              */
@@ -98,7 +98,7 @@ mavenPublishing {
         signAllPublications()
     }
 
-    coordinates("com.androidacy.lsparanoid", project.name, version.toString())
+    coordinates("dev.ujhhgtg.lsparanoid", project.name, version.toString())
 
     pom {
         name = "LSParanoid - ${project.name}"

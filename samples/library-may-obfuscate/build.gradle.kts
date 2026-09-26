@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "org.lsposed.paranoid.samples.library_may_obfuscate"
+    namespace = "dev.ujhhgtg.lsparanoid.samples.library_may_obfuscate"
     compileSdk = 37
     buildToolsVersion = "37.0.0"
     defaultConfig {
@@ -17,5 +17,5 @@ android {
 }
 
 dependencies {
-    implementation("com.androidacy.lsparanoid:core:0.11.0")
+    implementation("dev.ujhhgtg.lsparanoid:core:0.11.0")
 }

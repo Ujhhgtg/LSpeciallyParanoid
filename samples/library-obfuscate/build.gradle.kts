@@ -1,6 +1,6 @@
 plugins {
     id("com.android.library")
-    id("com.androidacy.lsparanoid")
+    id("dev.ujhhgtg.lsparanoid")
 }
 
 lsparanoid {
@@ -8,7 +8,7 @@ lsparanoid {
 }
 
 android {
-    namespace = "org.lsposed.paranoid.samples.library_obfuscate"
+    namespace = "dev.ujhhgtg.lsparanoid.samples.library_obfuscate"
     compileSdk = 37
     buildToolsVersion = "37.0.0"
     defaultConfig {

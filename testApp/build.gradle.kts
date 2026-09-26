@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application") version "9.4.1"
-    id("com.androidacy.lsparanoid") version "0.11.0"
+    id("dev.ujhhgtg.lsparanoid") version "0.11.0"
 }
 
 lsparanoid {
@@ -9,11 +9,11 @@ lsparanoid {
 }
 
 android {
-    namespace = "com.androidacy.lsparanoid.testapp"
+    namespace = "dev.ujhhgtg.lsparanoid.testapp"
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.androidacy.lsparanoid.testapp"
+        applicationId = "dev.ujhhgtg.lsparanoid.testapp"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation("com.androidacy.lsparanoid:core:0.11.0")
+    implementation("dev.ujhhgtg.lsparanoid:core:0.11.0")
 
     // Kotlin stdlib needed for annotations used by lsparanoid
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.4.20")

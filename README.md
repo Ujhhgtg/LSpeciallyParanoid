@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.androidacy.lsparanoid/core)](https://central.sonatype.com/artifact/com.androidacy.lsparanoid/core)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.ujhhgtg.lsparanoid/core)](https://central.sonatype.com/artifact/dev.ujhhgtg.lsparanoid/core)
 [![Build](https://github.com/Androidacy/LSParanoid/actions/workflows/android.yml/badge.svg)](https://github.com/Androidacy/LSParanoid/actions/workflows/android.yml)
 
 LSParanoid
@@ -30,11 +30,11 @@ Then in your module's `build.gradle.kts`:
 ```kotlin
 plugins {
   id("com.android.application") // or "com.android.library"
-  id("com.androidacy.lsparanoid") version "0.11.0"
+  id("dev.ujhhgtg.lsparanoid") version "0.11.0"
 }
 
 dependencies {
-  implementation("com.androidacy.lsparanoid:core:0.11.0")
+  implementation("dev.ujhhgtg.lsparanoid:core:0.11.0")
 }
 ```
 
@@ -51,7 +51,7 @@ Paranoid plugin can be configured using `lsparanoid` extension object.
 The following is an example `build.gradle.kts` that configures `lsparanoid` extension object with default values.
 ```kotlin
 plugins {
-    id("com.androidacy.lsparanoid") version "0.11.0"
+    id("dev.ujhhgtg.lsparanoid") version "0.11.0"
     // other plugins...
 }
 

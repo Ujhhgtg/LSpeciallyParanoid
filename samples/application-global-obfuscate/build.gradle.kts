@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("com.androidacy.lsparanoid")
+    id("dev.ujhhgtg.lsparanoid")
 }
 
 lsparanoid {
@@ -10,11 +10,11 @@ lsparanoid {
 }
 
 android {
-    namespace = "org.lsposed.paranoid.samples.application_global_obfuscate"
+    namespace = "dev.ujhhgtg.lsparanoid.samples.application_global_obfuscate"
     compileSdk = 37
     buildToolsVersion = "37.0.0"
     defaultConfig {
-        applicationId = "org.lsposed.paranoid.samples.application_global_obfuscate"
+        applicationId = "dev.ujhhgtg.lsparanoid.samples.application_global_obfuscate"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

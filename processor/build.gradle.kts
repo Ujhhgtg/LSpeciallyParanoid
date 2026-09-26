@@ -16,7 +16,7 @@ mavenPublishing {
         signAllPublications()
     }
 
-    coordinates("com.androidacy.lsparanoid", project.name, version.toString())
+    coordinates("dev.ujhhgtg.lsparanoid", project.name, version.toString())
 
     pom {
         name = "LSParanoid - ${project.name}"

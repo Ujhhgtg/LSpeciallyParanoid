@@ -23,19 +23,19 @@
 }
 
 # Keep DeobfuscatorHelper methods used by generated code
--keep,allowobfuscation class com.androidacy.lsparanoid.DeobfuscatorHelper {
+-keep,allowobfuscation class dev.ujhhgtg.lsparanoid.DeobfuscatorHelper {
     public static java.lang.String getString(long, java.lang.String[]);
     public static java.lang.String getString(long, java.lang.String[], java.lang.Class);
     public static java.lang.String[] loadChunksFromByteArray(byte[], long);
 }
 
 # Keep RandomHelper used by DeobfuscatorHelper
--keep,allowobfuscation class com.androidacy.lsparanoid.RandomHelper {
+-keep,allowobfuscation class dev.ujhhgtg.lsparanoid.RandomHelper {
     public static long seed(long);
     public static long next(long);
 }
 
 # Keep Base64Decoder used by Chunk classes
--keep,allowobfuscation class com.androidacy.lsparanoid.Base64Decoder {
+-keep,allowobfuscation class dev.ujhhgtg.lsparanoid.Base64Decoder {
     public static byte[] decode(java.lang.String);
 }

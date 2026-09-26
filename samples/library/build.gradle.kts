@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "org.lsposed.paranoid.samples.library"
+    namespace = "dev.ujhhgtg.lsparanoid.samples.library"
     compileSdk = 37
     buildToolsVersion = "37.0.0"
     defaultConfig {

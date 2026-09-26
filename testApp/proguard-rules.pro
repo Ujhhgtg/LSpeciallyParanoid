@@ -1,13 +1,13 @@
 # ProGuard rules for testApp
 
 # Keep test activity for instrumentation
--keep class com.androidacy.lsparanoid.testapp.MainActivity {
+-keep class dev.ujhhgtg.lsparanoid.testapp.MainActivity {
     public <init>(...);
     public <methods>;
 }
 
 # Keep test utility class
--keep class com.androidacy.lsparanoid.testapp.StringUtils {
+-keep class dev.ujhhgtg.lsparanoid.testapp.StringUtils {
     public static <methods>;
 }
 
