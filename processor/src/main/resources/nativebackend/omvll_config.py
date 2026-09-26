@@ -5,7 +5,7 @@ from functools import lru_cache
 
 class LspConfig(omvll.ObfuscationConfig):
     def flatten_cfg(self, module, function):
-        selected = function.name in {"lsp_resolve", "crypto_aead_read", "lsp_guard_init", "lsp_apk_verify"}
+        selected = function.name in {"lsp_resolve", "crypto_aead_read", "lsp_guard_init", "lsp_apk_verify", "lsp_frida_check"}
         if selected:
             print("LSP_OMVLL_SELECTED flatten_cfg " + function.name, flush=True)
         return selected

@@ -1,0 +1,14 @@
+{
+  "gadget_sha256": "26749cec62b36b49ebab9ecb79e883a95408cdf5d6fa9f73a97dfa87ef2bf35c",
+  "guard_sha256": "8d984fdb7d936d08f88e202c749fcb805b51bf59ccc15b4c5b914df74982d8ca",
+  "serial": "emulator-5580",
+  "abi": "x86_64",
+  "mode": "control",
+  "sdk": "37",
+  "page_size": "16384",
+  "outcome": "inconclusive",
+  "pid": "6527",
+  "exit_code": 3,
+  "output": "LSP_FRIDA_TEST pid=6527 mode=control\n\"/data/local/tmp/lsp-frida-owned-probe/libfixture.so\" program alignment (4096) cannot be smaller than system page size (16384)\nGADGET_ERROR: dlopen failed: \"/data/local/tmp/lsp-frida-owned-probe/libfixture.so\" program alignment (4096) cannot be smaller than system page size (16384)\n",
+  "evidence": []
+}

@@ -12,8 +12,8 @@ resource item, rebuilds transformed class constant pools, and generates an AArch
 through `JNI_OnLoad`. Each protected build invocation uses fresh random entropy. Optional O-MVLL
 hardening targets selected decoder and verification functions. Native mode now requires APK signature,
 loaded-library integrity, approved-process identity and Android-runtime verification. Failed verification
-calls `abort()` immediately, including inside an injected host. There is no root/Frida/LSPosed blacklist;
-those are legitimate environments for modules.
+calls `abort()` immediately, including inside an injected host. Native mode also aborts when its
+Frida detector matches. Root, LSPosed and Zygisk themselves are not rejection criteria.
 
 This increases the work required for static extraction. It cannot keep plaintext secret from an
 attacker controlling the process: decoded Java strings and the native decoder remain observable.
@@ -33,7 +33,7 @@ Make the plugin portal, Google Maven and Maven Central available in `settings.gr
 ```kotlin
 plugins {
     id("com.android.application")
-    id("dev.ujhhgtg.lsparanoid") version "0.13.0"
+    id("dev.ujhhgtg.lsparanoid") version "0.13.1"
 }
 
 android {
@@ -106,6 +106,25 @@ that path requires an explicitly pinned host plus authenticated module APK/libra
 verification happens at load, with bridge/process checks on each decode. These checks cannot stop
 hooks or arbitrary code already executing inside an authorized signed host from observing plaintext,
 and do not make binary patching impossible.
+
+### Frida detection (0.13.1)
+
+Protected native builds check at decoder initialization and at most once per second during subsequent
+decodes. Detection calls `abort()` immediately. This covers recognizable executable agent/Gadget
+mappings, specific Frida thread names, and co-located Gum interceptor, scheduler and JavaScript-engine
+type fingerprints in a mapped ELF, including the inspected reversed scheduler identifier. The ELF
+check does not depend on library names or the `frida_agent_main` export. Thread enumeration uses
+`getdents64` rather than libc `readdir`, which stock Frida filters. Self-memory inspection uses
+`process_vm_readv`; ordinary Android apps need no `/proc/self/mem` permission.
+
+Clean ELF images are cached; newly mapped images are inspected on the next scheduled check. There is
+no idle watchdog or device-wide server/port scan. Merely installing Frida, generic GLib threads and
+ordinary JIT mappings do not trigger detection. Protected builds fail closed if required inspection
+is unavailable. Unprotected WeKit debug/test builds do not load this detector.
+
+The inspected forks randomize several names, so this is a layered signature detector, not proof that
+arbitrary modified Frida, scrubbed ELF headers/types or forged inspection results will be detected.
+See [source audit, tests and limits](artifacts/frida-detection.md).
 
 ## Module and injected-process bootstrap
 

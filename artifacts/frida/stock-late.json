@@ -1,0 +1,17 @@
+{
+  "gadget_sha256": "bff4969e0d6f78455ecfa5ec48553b37e587bc611c32363dc623fd491200200f",
+  "guard_sha256": "8d984fdb7d936d08f88e202c749fcb805b51bf59ccc15b4c5b914df74982d8ca",
+  "serial": "emulator-5580",
+  "abi": "x86_64",
+  "mode": "late",
+  "sdk": "37",
+  "page_size": "16384",
+  "outcome": "native_abort",
+  "pid": "6294",
+  "exit_code": 134,
+  "output": "LSP_FRIDA_TEST pid=6294 mode=late\nCLEAN_BOOTSTRAP\nLSP_GADGET_STARTED\nGADGET_LOADED\n",
+  "evidence": [
+    "09-27 00:19:22.614  6294  6294 F libc    : Fatal signal 6 (SIGABRT), code -1 (SI_QUEUE) in tid 6294 (probe), pid 6294 (probe)",
+    "09-27 00:19:22.622  6302  6302 F DEBUG   : Abort message: 'LSP guard: Frida Gum runtime detected'"
+  ]
+}

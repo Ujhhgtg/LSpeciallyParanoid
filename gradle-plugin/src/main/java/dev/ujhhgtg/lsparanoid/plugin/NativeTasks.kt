@@ -120,7 +120,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         privateSymbols.resolve("compiler.log").writeText(compileLog)
         check(result.exitValue == 0) { "Native compilation failed:\n$compileLog" }
         if (omvllPlugin.isPresent && !input.resolve("build-id.txt").readLines().contains("records=0")) {
-            for (function in listOf("lsp_resolve", "crypto_aead_read", "lsp_guard_init", "lsp_apk_verify")) {
+            for (function in listOf("lsp_resolve", "crypto_aead_read", "lsp_guard_init", "lsp_apk_verify", "lsp_frida_check")) {
                 check(compileLog.contains("LSP_OMVLL_SELECTED flatten_cfg $function")) {
                     "O-MVLL did not confirm the required protection for $function; see private compiler.log"
                 }
@@ -130,7 +130,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
             }
             val passLogs = privateSymbols.resolve("omvll-logs").walkTopDown()
                 .filter { it.isFile && it.extension == "log" }.map { it.readText() }.toList()
-            for ((pass, module) in listOf("ControlFlowFlattening" to "decoder.c", "ControlFlowFlattening" to "monocypher.c", "Arithmetic" to "decoder.c", "ControlFlowFlattening" to "runtime_guard.c", "ControlFlowFlattening" to "apk_verify.c")) {
+            for ((pass, module) in listOf("ControlFlowFlattening" to "decoder.c", "ControlFlowFlattening" to "monocypher.c", "Arithmetic" to "decoder.c", "ControlFlowFlattening" to "runtime_guard.c", "ControlFlowFlattening" to "apk_verify.c", "ControlFlowFlattening" to "frida_guard.c")) {
                 val applied = Regex("\\[omvll::$pass] Changes\\s+applied on module[^\\n]*${Regex.escape(module)}")
                 check(passLogs.any { applied.containsMatchIn(it) }) {
                     "O-MVLL selected $pass for $module but did not report applying it; see private pass logs"

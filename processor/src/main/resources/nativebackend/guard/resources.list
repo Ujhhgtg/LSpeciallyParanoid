@@ -1,5 +1,7 @@
 guard/apk_verify.c
 guard/apk_verify.h
+guard/frida_guard.c
+guard/frida_guard.h
 guard/runtime_guard.c
 guard/runtime_guard.h
 guard/vendor/bearssl/LICENSE.txt

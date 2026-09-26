@@ -1,0 +1,14 @@
+{
+  "gadget_sha256": "8c4a9aec4692117e903f7f2436dd533b82b09c397ae3c5574605fab0d5221fb2",
+  "guard_sha256": "8d984fdb7d936d08f88e202c749fcb805b51bf59ccc15b4c5b914df74982d8ca",
+  "serial": "emulator-5580",
+  "abi": "x86_64",
+  "mode": "control",
+  "sdk": "37",
+  "page_size": "16384",
+  "outcome": "alive",
+  "pid": "6389",
+  "exit_code": 0,
+  "output": "LSP_FRIDA_TEST pid=6389 mode=control\nLSP_GADGET_STARTED\nGADGET_LOADED\nALIVE\n",
+  "evidence": []
+}

@@ -1,6 +1,7 @@
 #define _GNU_SOURCE
 #include "runtime_guard.h"
 #include "apk_verify.h"
+#include "frida_guard.h"
 #include "guard_policy.h"
 
 #include <android/set_abort_message.h>
@@ -602,6 +603,7 @@ void lsp_guard_init(JavaVM *vm, JNIEnv *env, jclass bridge) {
     lsp_require(vm != NULL && env != NULL && bridge != NULL && lsp_verified_vm == NULL,
                 "LSP guard: invalid initialization");
     lsp_environment(vm, env);
+    lsp_frida_check(1);
     char host_source[PATH_MAX];
     int own_app = lsp_host(env, host_source);
     /* Heap allocation avoids consuming ~130 KiB on Android's smaller managed-thread stacks. */
@@ -641,4 +643,5 @@ void lsp_guard_check(JNIEnv *env, jclass bridge) {
     lsp_require(lsp_verified_vm != NULL && env != NULL && bridge != NULL &&
                 getpid() == lsp_verified_pid && getuid() == lsp_verified_uid &&
                 (*env)->IsSameObject(env, bridge, lsp_verified_bridge), "LSP guard: unauthorized decoder caller");
+    lsp_frida_check(0);
 }
