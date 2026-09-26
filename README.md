@@ -1,5 +1,5 @@
 [![Maven Central](https://img.shields.io/maven-central/v/dev.ujhhgtg.lsparanoid/core)](https://central.sonatype.com/artifact/dev.ujhhgtg.lsparanoid/core)
-[![Build](https://github.com/Androidacy/LSParanoid/actions/workflows/android.yml/badge.svg)](https://github.com/Androidacy/LSParanoid/actions/workflows/android.yml)
+[![Build](https://github.com/Ujhhgtg/LSpeciallyParanoid/actions/workflows/android.yml/badge.svg)](https://github.com/Ujhhgtg/LSpeciallyParanoid/actions/workflows/android.yml)
 
 LSParanoid
 ========
@@ -139,6 +139,8 @@ Credit
 LSParanoid was originally forked from https://github.com/MichaelRocks/paranoid. Credits to its original author Michael Rozumyanskiy.
 
 This version was forked from https://github.com/LSPosed/LSParanoid. Credits to LSPosed Developers.
+
+This fork is based on https://github.com/Androidacy/LSParanoid. Credits to Androidacy.
 
 License
 =======
