@@ -18,12 +18,14 @@ package dev.ujhhgtg.lsparanoid.plugin
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.*
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.*
 import dev.ujhhgtg.lsparanoid.processor.ParanoidProcessor
 import dev.ujhhgtg.lsparanoid.processor.resources.ResourceBytecodeValidator
+import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeVerificationPolicy
 import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeBuildSpec
 import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeRecordIO
 import java.util.jar.JarOutputStream
@@ -46,6 +48,9 @@ abstract class LSParanoidTask : DefaultTask() {
     @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val resourceRecords: RegularFileProperty
     @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val resourceReport: RegularFileProperty
     @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val runtimeSymbols: RegularFileProperty
+    @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val signerPins: RegularFileProperty
+    @get:Input abstract val protectedApplicationId: Property<String>
+    @get:Input abstract val allowedHostCertificates: MapProperty<String, List<String>>
     @get:Input abstract val applicationNamespace: Property<String>
     @get:OutputDirectory abstract val nativeSources: DirectoryProperty
 
@@ -66,6 +71,8 @@ abstract class LSParanoidTask : DefaultTask() {
                 nativeSpec = spec, nativeOutput = nativeSources.get().asFile.toPath(),
                 resourceRecords = if (spec != null && resourceRecords.isPresent) NativeRecordIO.read(resourceRecords.get().asFile, spec) else emptyList(),
                 requireNativeRuntime = requireNativeRuntime.get(),
+                verificationPolicy = if (spec != null) NativeVerificationPolicy(protectedApplicationId.get(),
+                    signerPins.get().asFile.readLines().filter { it.isNotBlank() }, allowedHostCertificates.get()) else null,
                 excludedClassPrefixes = excludedClassPrefixes.get(), coverageReport = coverageReport.get().asFile.toPath(),
             ).process()
         }

@@ -1,0 +1,387 @@
+{
+  "apk_sha256": "3aa8bf7b9a20f1b83a6cad00d27945e2c25066a8798dbfe1d0e9027dd1d949da",
+  "serial": "emulator-5580",
+  "sdk": "37",
+  "abis": "x86_64,arm64-v8a",
+  "page_size": "16384",
+  "outcome": "plaintext_recovered",
+  "recovered": [
+    {
+      "id": "0127a321bfd6b9be",
+      "plaintext": "Third test message with special chars: !@#$%^&*()"
+    },
+    {
+      "id": "0181b55920fc50df",
+      "plaintext": "First test message"
+    },
+    {
+      "id": "030bf9c530b0d5d5",
+      "plaintext": "Activity created successfully"
+    },
+    {
+      "id": "03b36ad3188d92d2",
+      "plaintext": "Third test message with special chars: !@#$%^&*()"
+    },
+    {
+      "id": "067a25c83daf50fe",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "0708cb4f2f31b7da",
+      "plaintext": "lsp-duplicate-site-sentinel-733019"
+    },
+    {
+      "id": "0ad447f97ec21f48",
+      "plaintext": "Activity created successfully"
+    },
+    {
+      "id": "0d2fe3bce992513b",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "0d6c09ff7c077f0f",
+      "plaintext": "Activity lifecycle events are being tracked"
+    },
+    {
+      "id": "0e491b3555517428",
+      "plaintext": "StringUtils"
+    },
+    {
+      "id": "0fa996443226464b",
+      "plaintext": "dev.ujhhgtg.lsparanoid.testapp"
+    },
+    {
+      "id": "10eb32ada982f7cd",
+      "plaintext": "SELECT * FROM users WHERE id = ? AND status = 'active'"
+    },
+    {
+      "id": "13f4ab65d1e1dc72",
+      "plaintext": "lsp-long-sentinel-c70b32e8:0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    },
+    {
+      "id": "147145e900548dde",
+      "plaintext": "! This string is obfuscated."
+    },
+    {
+      "id": "148e47911139f158",
+      "plaintext": "https://api.testapp.com/v2/data"
+    },
+    {
+      "id": "15f29fea6fafdf2e",
+      "plaintext": "MESSAGE_CREATED validation failed"
+    },
+    {
+      "id": "174374a40fe2f031",
+      "plaintext": "lsp-duplicate-site-sentinel-733019"
+    },
+    {
+      "id": "179d064b136bdb15",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "17c62035effa97ca",
+      "plaintext": "Second test message"
+    },
+    {
+      "id": "1a4a85b0b995efea",
+      "plaintext": "Activity stopped"
+    },
+    {
+      "id": "1aa2d8105ae0b678",
+      "plaintext": "Activity started"
+    },
+    {
+      "id": "1db3a21b6b0a2e3e",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "1ddc54dd09e6ded8",
+      "plaintext": "Activity created successfully"
+    },
+    {
+      "id": "1e246d88eb22c25f",
+      "plaintext": "Test string with obfuscation: MainActivity"
+    },
+    {
+      "id": "1e8781e1648ee858",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "1fcce8656a3fba0b",
+      "plaintext": "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+    },
+    {
+      "id": "22ff3bb115831efe",
+      "plaintext": "StringUtils"
+    },
+    {
+      "id": "245d2d9a36344ce7",
+      "plaintext": "Hello, "
+    },
+    {
+      "id": "2500f58618d8e8aa",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "252eb450146282b5",
+      "plaintext": "Activity stopped"
+    },
+    {
+      "id": "255179507fc0f82a",
+      "plaintext": "saved_state_data"
+    },
+    {
+      "id": "272b0982127b8059",
+      "plaintext": "First test message"
+    },
+    {
+      "id": "2766c09d4cf900e8",
+      "plaintext": " "
+    },
+    {
+      "id": "28b97a8016dab900",
+      "plaintext": "Emoji test: \ud83d\ude00 \ud83d\ude02 \ud83d\ude0d \ud83d\udc4d"
+    },
+    {
+      "id": "29331d2ff8df6efd",
+      "plaintext": "https://api.testapp.com/v2/data"
+    },
+    {
+      "id": "2a9995897da65e1e",
+      "plaintext": "/data/data/dev.ujhhgtg.lsparanoid.testapp/files/config.json"
+    },
+    {
+      "id": "2baac432744ded8f",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "2df5b26625e6650b",
+      "plaintext": "This is a private obfuscated string"
+    },
+    {
+      "id": "3264b27e7122b2fa",
+      "plaintext": "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+    },
+    {
+      "id": "334e4fad8d2cce61",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "341ff1e23c8eadb8",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "345fb4cb2ab72e0d",
+      "plaintext": "Second test message"
+    },
+    {
+      "id": "36fc54b8928f9e60",
+      "plaintext": "<html><body><h1>Test</h1><p>Content</p></body></html>"
+    },
+    {
+      "id": "37b52070c1cbfae1",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "3a3aa6ebca33f94b",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "3c0f64020421941e",
+      "plaintext": "This is a multi-line string.\nIt contains multiple lines.\nAnd should be properly obfuscated."
+    },
+    {
+      "id": "3cbaaaaa86b0b497",
+      "plaintext": "API_ENDPOINT validation failed"
+    },
+    {
+      "id": "3f34eb3c80d4e049",
+      "plaintext": "All obfuscated strings validated successfully"
+    },
+    {
+      "id": "40291ea918b269fa",
+      "plaintext": "LSParanoid-TestApp/1.0 (Android)"
+    },
+    {
+      "id": "4055be4ba855a9e9",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "4056f54a7349f02a",
+      "plaintext": "Activity paused"
+    },
+    {
+      "id": "43292db3ab74131e",
+      "plaintext": "Activity resumed"
+    },
+    {
+      "id": "44acf9877f5a0a67",
+      "plaintext": "Activity destroyed"
+    },
+    {
+      "id": "44b0e4bb03bde8e3",
+      "plaintext": "Unicode test: \u2764\ufe0f \ud83d\ude80 \ud83c\udf89"
+    },
+    {
+      "id": "4512e75a47ea2585",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "4843b06ceeaba123",
+      "plaintext": "An error occurred during activity lifecycle"
+    },
+    {
+      "id": "48c7f593a47ff583",
+      "plaintext": "\u4f60\u597d\u4e16\u754c"
+    },
+    {
+      "id": "4b7b1b330221f584",
+      "plaintext": "https://api.testapp.com/v2/data"
+    },
+    {
+      "id": "4dc502b03aee02c6",
+      "plaintext": "Activity paused"
+    },
+    {
+      "id": "4e06324215a5040c",
+      "plaintext": "Test data: MainActivity"
+    },
+    {
+      "id": "4f78a1641e1f338f",
+      "plaintext": "^\\+?[1-9]\\d{1,14}$"
+    },
+    {
+      "id": "4fb5b56fe76d72aa",
+      "plaintext": "https://api.example.com/v1/users?page=1&limit=10"
+    },
+    {
+      "id": "52f55b9bcdf64b91",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "58d9cdc4c8d705cf",
+      "plaintext": "Activity started"
+    },
+    {
+      "id": "5bd91b25cab33b92",
+      "plaintext": "Error: Failed to connect to database. Please check your connection."
+    },
+    {
+      "id": "5fd69469f9b89fe5",
+      "plaintext": "Activity lifecycle events are being tracked"
+    },
+    {
+      "id": "6004ce335fa228dd",
+      "plaintext": "An error occurred during activity lifecycle"
+    },
+    {
+      "id": "61eb456be0f9471c",
+      "plaintext": "saved_state_data"
+    },
+    {
+      "id": "633ca703255d5d19",
+      "plaintext": "\u0645\u0631\u062d\u0628\u0627 \u0628\u0643"
+    },
+    {
+      "id": "634ff2e4da1979ab",
+      "plaintext": "https://"
+    },
+    {
+      "id": "636115740f48589b",
+      "plaintext": "This is a very long string that should test the chunk loading mechanism of LSParanoid. It contains multiple sentences and should be split across multiple chunks. The obfuscation processor should handle this correctly and the runtime should be able to reassemble the string properly from its obfuscated chunks. This is important for real-world applications that may have lengthy strings."
+    },
+    {
+      "id": "6361f07980079ead",
+      "plaintext": "https://api.example.com/v1/users?page=1&limit=10&custom="
+    },
+    {
+      "id": "684518dd34254f62",
+      "plaintext": "\u4e2d\u6587\u0000?unpaired?\ud834\udd1e"
+    },
+    {
+      "id": "6918ba76b104c689",
+      "plaintext": "Activity destroyed"
+    },
+    {
+      "id": "69b14b398acf1706",
+      "plaintext": "{\"name\":\"test\",\"value\":42,\"enabled\":true}"
+    },
+    {
+      "id": "6a1b976572c5853d",
+      "plaintext": "MainActivity"
+    },
+    {
+      "id": "6da70c90b860563a",
+      "plaintext": "Accessed utility tag: "
+    },
+    {
+      "id": "7712bf46340ad0cb",
+      "plaintext": "This is a private obfuscated string"
+    },
+    {
+      "id": "7859b3d8acd0e40e",
+      "plaintext": "Activity resumed"
+    },
+    {
+      "id": "7a20f90a0079eb13",
+      "plaintext": "TAG string validation failed"
+    },
+    {
+      "id": "7a7a78cdf2531342",
+      "plaintext": ""
+    },
+    {
+      "id": "7b7c269461e60802",
+      "plaintext": "Failed to create activity with obfuscated strings"
+    },
+    {
+      "id": "7c24119b7454b061",
+      "plaintext": "<?xml version=\"1.0\"?><root><item id=\"1\">Value</item></root>"
+    },
+    {
+      "id": "7da7e6a84c7725da",
+      "plaintext": "lsp-native-literal-sentinel-b69ce2d6"
+    },
+    {
+      "id": "7f36ee91c768dce2",
+      "plaintext": "Activity created successfully"
+    },
+    {
+      "id": "843f6b9282752900",
+      "plaintext": ""
+    },
+    {
+      "id": "885fbf4c36c3c755",
+      "plaintext": "LSP_SENTINEL_ARRAY"
+    },
+    {
+      "id": "8ffed4401512cac2",
+      "plaintext": "\u4f60\u597d"
+    },
+    {
+      "id": "aae52cbb1fed78e2",
+      "plaintext": "%d native file"
+    },
+    {
+      "id": "b8dae41b37db2740",
+      "plaintext": "%d \u4e2a\u6587\u4ef6"
+    },
+    {
+      "id": "cc301d3545f8cfca",
+      "plaintext": "%d native files"
+    },
+    {
+      "id": "e1efd247890fd588",
+      "plaintext": "LSP_SENTINEL_GREETING %1$s"
+    },
+    {
+      "id": "f1d695d476adfad7",
+      "plaintext": "  quoted  \nline\tend"
+    },
+    {
+      "id": "fd357eef05066212",
+      "plaintext": "\u539f\u751f\u4f60\u597d %1$s"
+    }
+  ],
+  "mode": "original-dex"
+}

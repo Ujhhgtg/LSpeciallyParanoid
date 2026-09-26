@@ -78,6 +78,9 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
             report.get().asFile.apply { parentFile.mkdirs(); writeText("No protected strings; native compilation skipped.\n") }
             return
         }
+        require(input.resolve("verification-required.txt").isFile && input.resolve("guard_policy.h").isFile) {
+            "Refusing to compile a native codec fixture without APK/runtime verification policy"
+        }
         require(System.getProperty("os.name").lowercase().contains("linux")) {
             "Native protection currently supports Linux build hosts only"
         }
@@ -98,6 +101,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         )
         if (omvllPlugin.isPresent) arguments += "-fpass-plugin=${omvllPlugin.get().asFile.absolutePath}"
         arguments += input.walkTopDown().filter { it.isFile && it.extension == "c" }.sortedBy { it.path }.map { it.absolutePath }.toList()
+        arguments += listOf("-lz", "-ldl")
         val environment = mutableMapOf<String, String>()
         if (omvllPlugin.isPresent) {
             val config = input.resolve("omvll_config.py")
@@ -116,7 +120,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         privateSymbols.resolve("compiler.log").writeText(compileLog)
         check(result.exitValue == 0) { "Native compilation failed:\n$compileLog" }
         if (omvllPlugin.isPresent && !input.resolve("build-id.txt").readLines().contains("records=0")) {
-            for (function in listOf("lsp_resolve", "crypto_aead_read")) {
+            for (function in listOf("lsp_resolve", "crypto_aead_read", "lsp_guard_init", "lsp_apk_verify")) {
                 check(compileLog.contains("LSP_OMVLL_SELECTED flatten_cfg $function")) {
                     "O-MVLL did not confirm the required protection for $function; see private compiler.log"
                 }
@@ -126,7 +130,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
             }
             val passLogs = privateSymbols.resolve("omvll-logs").walkTopDown()
                 .filter { it.isFile && it.extension == "log" }.map { it.readText() }.toList()
-            for ((pass, module) in listOf("ControlFlowFlattening" to "decoder.c", "ControlFlowFlattening" to "monocypher.c", "Arithmetic" to "decoder.c")) {
+            for ((pass, module) in listOf("ControlFlowFlattening" to "decoder.c", "ControlFlowFlattening" to "monocypher.c", "Arithmetic" to "decoder.c", "ControlFlowFlattening" to "runtime_guard.c", "ControlFlowFlattening" to "apk_verify.c")) {
                 val applied = Regex("\\[omvll::$pass] Changes\\s+applied on module[^\\n]*${Regex.escape(module)}")
                 check(passLogs.any { applied.containsMatchIn(it) }) {
                     "O-MVLL selected $pass for $module but did not report applying it; see private pass logs"
@@ -151,7 +155,7 @@ abstract class CompileNativeTask @Inject constructor(private val exec: ExecOpera
         val compiler = capture(listOf(clang.absolutePath, "--version"))
         report.get().asFile.apply {
             parentFile.mkdirs()
-            writeText("Library: ${packaged.name}\nABI: arm64-v8a\nMinimum API: ${minSdk.get()}\nO-MVLL: ${omvllPlugin.isPresent}\nPackaged bytes: ${packaged.length()}\n$compiler\n$exports\n$elf")
+            writeText("Library: ${packaged.name}\nABI: arm64-v8a\nMinimum API: ${minSdk.get()}\nO-MVLL: ${omvllPlugin.isPresent}\nVerification: APK-v2, pinned host, loaded ELF, Android runtime; failure=abort\nPackaged bytes: ${packaged.length()}\n$compiler\n$exports\n$elf")
         }
     }
 

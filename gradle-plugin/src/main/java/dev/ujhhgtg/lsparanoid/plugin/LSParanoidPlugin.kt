@@ -87,6 +87,8 @@ class LSParanoidPlugin : Plugin<Project> {
             val wrappedResourceAccess = extension.wrappedResourceAccess
             val omvllPlugin = extension.omvllPlugin
             val omvllPythonPath = extension.omvllPythonPath
+            val explicitSignerPins = extension.signerCertificateSha256.toSet()
+            val hostCertificates = extension.allowedHostCertificates.mapValues { it.value.toList() }
             require(backend == "jvm" || backend == "native") { "lsparanoid.backend must be jvm or native" }
             require(backend == "native" || resourceIncludes.isEmpty()) { "Resource protection requires the native backend" }
             val capitalized = variant.name.replaceFirstChar { it.uppercase() }
@@ -99,6 +101,8 @@ class LSParanoidPlugin : Plugin<Project> {
                 it.classFilter = classFilter
                 it.projectName.set(identity)
                 it.applicationNamespace.set(variant.namespace)
+                it.protectedApplicationId.set(if (variant is ApplicationVariant) variant.applicationId else variant.namespace)
+                it.allowedHostCertificates.set(hostCertificates)
                 it.backend.set(backend)
                 it.requireNativeRuntime.set(!automaticLoading)
                 it.coverageReport.set(project.layout.buildDirectory.file("reports/lspeciallyparanoid/${variant.name}/strings.tsv"))
@@ -116,6 +120,27 @@ class LSParanoidPlugin : Plugin<Project> {
             if (backend == "native") {
                 require(variant is ApplicationVariant) { "Native protection currently supports application modules, not published AARs" }
                 require(variant.minSdk.apiLevel >= 28) { "Native protection currently requires minSdk 28 or newer" }
+                // The verifier checks APK v2 signed contents itself rather than trusting PackageManager's signer fields.
+                variant.signingConfig.enableV2Signing.set(true)
+                val android = project.extensions.getByType(ApplicationExtension::class.java)
+                val signing = variant.buildType?.let { android.buildTypes.findByName(it)?.signingConfig }
+                    ?: variant.productFlavors.firstNotNullOfOrNull { (_, name) -> android.productFlavors.findByName(name)?.signingConfig }
+                    ?: android.defaultConfig.signingConfig
+                require(explicitSignerPins.isNotEmpty() || signing != null) {
+                    "Native verification requires a signed APK; configure signingConfig or explicit signerCertificateSha256"
+                }
+                val signer = project.tasks.register("lspSigner$capitalized", NativeSigningTask::class.java) {
+                    it.explicitPins.set(explicitSignerPins)
+                    if (explicitSignerPins.isEmpty()) {
+                        it.keyStoreFile.set(signing!!.storeFile)
+                        it.keyAlias.set(signing.keyAlias)
+                        it.storePassword.set(signing.storePassword)
+                        // AGP owns creation of the default debug keystore; never generate or replace it ourselves.
+                        it.dependsOn("validateSigning$capitalized")
+                    }
+                    it.certificatePins.set(project.layout.buildDirectory.file("$base/public/signer-sha256.txt"))
+                }
+                transform.configure { it.signerPins.set(signer.flatMap { t -> t.certificatePins }) }
                 val entropy = project.tasks.register("lspEntropy$capitalized", NativeEntropyTask::class.java) {
                     it.output.set(project.layout.buildDirectory.file("$base/private/entropy.bin"))
                 }

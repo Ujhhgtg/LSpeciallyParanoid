@@ -1,0 +1,25 @@
+{
+  "apk_sha256": "536cf2f3d04d6f6b41c8e6a235554abbd894fdc75370ad37dd529c3c757a68c7",
+  "serial": "emulator-5580",
+  "sdk": 37,
+  "page_size": 16384,
+  "test": "alter extracted ELF GNU build-id; preserve authentic signed APK",
+  "outcome": "native_abort",
+  "evidence": [
+    "09-26 23:38:17.129   617   648 I ActivityManager: Start proc 6013:dev.ujhhgtg.lsparanoid.testapp:integrity_probe/u0a231 for next-top-activity {dev.ujhhgtg.lsparanoid.testapp/dev.ujhhgtg.lsparanoid.testapp.IntegrityProbeActivity}",
+    "09-26 23:38:17.141  6013  6013 I Zygote  : Process 6013 created for dev.ujhhgtg.lsparanoid.testapp:integrity_probe",
+    "09-26 23:38:17.141  6013  6013 I integrity_probe: Using generational CollectorTypeCMC GC.",
+    "09-26 23:38:17.142  6013  6013 W integrity_probe: Unexpected CPU variant for x86: x86_64.",
+    "09-26 23:38:17.142  6013  6013 W integrity_probe: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, alderlake, pantherlake, default",
+    "09-26 23:38:17.302  6013  6013 I LSP_INTEGRITY_TEST: ATTEMPT altered ELF note in isolated process",
+    "09-26 23:38:17.532  6013  6013 W integrity_probe: type=1400 audit(0.0:118): avc:  denied  { getattr } for  path=\"/sys/kernel/tracing/trace_marker\" dev=\"tracefs\" ino=49 scontext=u:r:untrusted_app:s0:c231,c256,c512,c768 tcontext=u:object_r:debugfs_trace_marker:s0 tclass=file permissive=0 app=dev.ujhhgtg.lsparanoid.testapp",
+    "09-26 23:38:17.540  6013  6013 W integrity_probe: type=1400 audit(0.0:119): avc:  denied  { getattr } for  path=\"/sys/kernel/tracing/trace_marker\" dev=\"tracefs\" ino=49 scontext=u:r:untrusted_app:s0:c231,c256,c512,c768 tcontext=u:object_r:debugfs_trace_marker:s0 tclass=file permissive=0 app=dev.ujhhgtg.lsparanoid.testapp",
+    "09-26 23:38:17.552  6013  6013 W integrity_probe: type=1400 audit(0.0:120): avc:  denied  { open } for  path=2F6D656D66643A6368696C64202864656C6574656429 dev=\"tmpfs\" ino=1290 scontext=u:r:untrusted_app:s0:c231,c256,c512,c768 tcontext=u:object_r:untrusted_app:s0:c231,c256,c512,c768 tclass=memfd_file permissive=0 app=dev.ujhhgtg.lsparanoid.testapp",
+    "09-26 23:38:17.556  6013  6013 W integrity_probe: type=1400 audit(0.0:121): avc:  denied  { open } for  path=2F6D656D66643A666F6E744D6170202864656C6574656429 dev=\"tmpfs\" ino=51 scontext=u:r:untrusted_app:s0:c231,c256,c512,c768 tcontext=u:object_r:system_server:s0 tclass=memfd_file permissive=0 app=dev.ujhhgtg.lsparanoid.testapp",
+    "09-26 23:38:17.679  6013  6013 F libc    : Fatal signal 6 (SIGABRT), code -1 (SI_QUEUE) in tid 6013 (integrity_probe), pid 6013 (integrity_probe)",
+    "09-26 23:38:17.818  6033  6033 F DEBUG   : Cmdline: dev.ujhhgtg.lsparanoid.testapp:integrity_probe",
+    "09-26 23:38:17.818  6033  6033 F DEBUG   : pid: 6013, ppid: 406, tid: 6013, name: integrity_probe  >>> dev.ujhhgtg.lsparanoid.testapp:integrity_probe <<<",
+    "09-26 23:38:17.818  6033  6033 F DEBUG   : Abort message: 'LSP guard: module signer, classpath or native integrity rejected'",
+    "09-26 23:38:17.844   617   939 I ActivityManager: Process dev.ujhhgtg.lsparanoid.testapp:integrity_probe (pid 6013) has died: fg  TOP "
+  ]
+}

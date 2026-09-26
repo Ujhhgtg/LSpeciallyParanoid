@@ -11,7 +11,7 @@ plugins {
 
 allprojects {
     group = "dev.ujhhgtg.lsparanoid"
-    version = "0.12.0"
+    version = "0.13.0"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {

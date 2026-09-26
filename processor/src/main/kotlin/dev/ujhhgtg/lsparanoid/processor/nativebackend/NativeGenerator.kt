@@ -85,16 +85,17 @@ object NativeGenerator {
 
     /** Returns false for an empty registry unless an explicit loader requires the runtime library. */
     @JvmStatic @JvmOverloads
-    fun generate(spec: NativeBuildSpec, records: List<NativeStringRecord>, outputDir: Path, requireRuntime: Boolean = false): Boolean =
-        generate(spec, records, outputDir.toFile(), requireRuntime)
+    fun generate(spec: NativeBuildSpec, records: List<NativeStringRecord>, outputDir: Path, requireRuntime: Boolean = false, verification: NativeVerificationPolicy? = null): Boolean =
+        generate(spec, records, outputDir.toFile(), requireRuntime, verification)
 
     @JvmStatic @JvmOverloads
-    fun generate(spec: NativeBuildSpec, records: List<NativeStringRecord>, outputDir: File, requireRuntime: Boolean = false): Boolean {
+    fun generate(spec: NativeBuildSpec, records: List<NativeStringRecord>, outputDir: File, requireRuntime: Boolean = false, verification: NativeVerificationPolicy? = null): Boolean {
         require(records.map { it.id }.toSet().size == records.size) { "Duplicate protected record IDs during assembly" }
         if (records.isEmpty() && !requireRuntime) return false
         outputDir.mkdirs()
         val sorted = records.sortedWith { a, b -> java.lang.Long.compareUnsigned(a.id, b.id) }
         File(outputDir, "payload.h").bufferedWriter().use { output ->
+            if (verification != null) output.appendLine("#define LSP_ANDROID_VERIFICATION 1")
             output.appendLine("/* Generated encrypted UTF-16LE data. Format ${NativeBuildSpec.FORMAT_VERSION}. */")
             for (domain in RecordDomain.entries) {
                 val key = spec.key(domain)
@@ -122,6 +123,18 @@ object NativeGenerator {
             output.appendLine("#define LSP_MAX_UTF16_LENGTH ${NativeStringRecord.MAX_UTF16_LENGTH}u")
             output.appendLine("#define LSP_BRIDGE_CLASS \"${spec.bridgeInternalName}\"")
             output.appendLine("#define LSP_NATIVE_METHOD \"${spec.bridgeNativeMethodName}\"")
+        }
+        if (verification != null) {
+            verification.write(spec, outputDir)
+            val manifest = NativeGenerator::class.java.getResourceAsStream("/nativebackend/guard/resources.list")
+                ?: error("Missing native guard resources manifest")
+            manifest.bufferedReader().useLines { lines -> lines.filter { it.isNotBlank() }.forEach { path ->
+                require(path.startsWith("guard/") && !path.contains(".."))
+                val target = File(outputDir, path).apply { parentFile.mkdirs() }
+                NativeGenerator::class.java.getResourceAsStream("/nativebackend/$path")!!.use { input ->
+                    target.outputStream().use { input.copyTo(it) }
+                }
+            } }
         }
         copyResource("decoder.c", outputDir)
         copyResource("omvll_config.py", outputDir)

@@ -30,6 +30,10 @@ open class LSParanoidExtension {
     var nativeNdkVersion: String = "29.0.14206865"
     var omvllPlugin: String? = null
     var omvllPythonPath: String? = null
+    /** Optional explicit certificate pins; otherwise derived from this variant's signing keystore. */
+    var signerCertificateSha256: Set<String> = emptySet()
+    /** Additional injected host package -> signing certificate SHA-256 pins. Own app is implicit. */
+    var allowedHostCertificates: Map<String, Set<String>> = emptyMap()
     /** Explicit resource identities (string/name, plurals/name, array/name) or glob patterns. */
     var resourceIncludes: Set<String> = emptySet()
     var resourceExcludes: Set<String> = emptySet()

@@ -1,0 +1,17 @@
+{
+  "apk_sha256": "d3ecd7d4ee2cfc4d67bbee4e0cfa6cb84f7c1b655d22f8266f86d738a2c2feb5",
+  "serial": "emulator-5580",
+  "sdk": "37",
+  "abis": "x86_64,arm64-v8a",
+  "page_size": "16384",
+  "outcome": "native_abort",
+  "recovered": [],
+  "shell_pid": "5884",
+  "abort_evidence": [
+    "09-26 23:37:11.774  5884  5884 F libc    : Fatal signal 6 (SIGABRT), code -1 (SI_QUEUE) in tid 5884 (versarial.shell), pid 5884 (versarial.shell)",
+    "09-26 23:37:11.887  5904  5904 F DEBUG   : Abort message: 'LSP guard: unauthorized application host'"
+  ],
+  "mode": "original-dex",
+  "protected_apk_sha256": "536cf2f3d04d6f6b41c8e6a235554abbd894fdc75370ad37dd529c3c757a68c7",
+  "protected_library_sha256": "84b27a463443b148cdbe02f6fa41e6369b4644833554825f7dac30fb3c8408e9"
+}

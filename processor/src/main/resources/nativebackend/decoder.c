@@ -13,6 +13,9 @@ typedef struct {
 } lsp_record;
 
 #include "payload.h"
+#ifdef LSP_ANDROID_VERIFICATION
+#include "guard/runtime_guard.h"
+#endif
 
 static void lsp_throw(JNIEnv *env, const char *type, const char *message) {
     if ((*env)->ExceptionCheck(env)) return;
@@ -54,6 +57,9 @@ static __attribute__((noinline)) int lsp_authenticate(const lsp_record *record, 
 
 static jstring lsp_decode(JNIEnv *env, jclass unused, jlong java_id) {
     (void)unused;
+#ifdef LSP_ANDROID_VERIFICATION
+    lsp_guard_check(env, unused);
+#endif
     if ((*env)->ExceptionCheck(env)) return NULL;
     const lsp_record *record = lsp_resolve((uint64_t)java_id);
     if (record == NULL) {
@@ -62,12 +68,18 @@ static jstring lsp_decode(JNIEnv *env, jclass unused, jlong java_id) {
     }
     if (record->length > LSP_MAX_UTF16_LENGTH || record->domain > 1 ||
         ((record->id >> 63) != record->domain) || record->offset > sizeof(lsp_payload)) {
+#ifdef LSP_ANDROID_VERIFICATION
+        abort();
+#endif
         lsp_throw(env, "java/lang/IllegalStateException", "Invalid LSP protected string metadata");
         return NULL;
     }
     const size_t size = (size_t)record->length * 2;
     if (sizeof(lsp_payload) - (size_t)record->offset < 16 ||
         size > sizeof(lsp_payload) - (size_t)record->offset - 16) {
+#ifdef LSP_ANDROID_VERIFICATION
+        abort();
+#endif
         lsp_throw(env, "java/lang/IllegalStateException", "Invalid LSP protected string bounds");
         return NULL;
     }
@@ -80,6 +92,9 @@ static jstring lsp_decode(JNIEnv *env, jclass unused, jlong java_id) {
     if (result != 0) {
         crypto_wipe(plain, size);
         free(plain);
+#ifdef LSP_ANDROID_VERIFICATION
+        abort();
+#endif
         lsp_throw(env, "java/lang/IllegalStateException", "LSP protected string authentication failed");
         return NULL;
     }
@@ -98,11 +113,27 @@ static jstring lsp_decode(JNIEnv *env, jclass unused, jlong java_id) {
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     (void)reserved;
     JNIEnv *env = NULL;
-    if ((*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_6) != JNI_OK) return JNI_ERR;
+    if ((*vm)->GetEnv(vm, (void **)&env, JNI_VERSION_1_6) != JNI_OK) {
+#ifdef LSP_ANDROID_VERIFICATION
+        abort();
+#endif
+        return JNI_ERR;
+    }
     jclass bridge = (*env)->FindClass(env, LSP_BRIDGE_CLASS);
-    if (bridge == NULL) return JNI_ERR;
+    if (bridge == NULL) {
+#ifdef LSP_ANDROID_VERIFICATION
+        abort();
+#endif
+        return JNI_ERR;
+    }
+#ifdef LSP_ANDROID_VERIFICATION
+    lsp_guard_init(vm, env, bridge);
+#endif
     JNINativeMethod methods[] = {{LSP_NATIVE_METHOD, "(J)Ljava/lang/String;", (void *)lsp_decode}};
     const jint result = (*env)->RegisterNatives(env, bridge, methods, 1);
     (*env)->DeleteLocalRef(env, bridge);
+#ifdef LSP_ANDROID_VERIFICATION
+    if (result != JNI_OK) abort();
+#endif
     return result == JNI_OK ? JNI_VERSION_1_6 : JNI_ERR;
 }

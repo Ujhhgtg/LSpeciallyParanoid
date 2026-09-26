@@ -1,0 +1,484 @@
+{
+  "apk_sha256": "536cf2f3d04d6f6b41c8e6a235554abbd894fdc75370ad37dd529c3c757a68c7",
+  "library": "lib/arm64-v8a/liblsp_db1ce6a6eb6e769a5772c8d4.so",
+  "library_sha256": "84b27a463443b148cdbe02f6fa41e6369b4644833554825f7dac30fb3c8408e9",
+  "bridge": {
+    "class": "dev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c",
+    "method": "n3a8d7fcf1db6b304"
+  },
+  "ids": [
+    "04a4efaa7e1a97c8",
+    "05f595a4d7fdaceb",
+    "086464360c64094a",
+    "0949ca2b2805104b",
+    "0986da3b4b3f78b3",
+    "0c362345b0ddbcd8",
+    "0cb90affd43330c4",
+    "0ee9b70ea507b97f",
+    "0f0ab1455eabb8db",
+    "101c10d72a1dc4a8",
+    "10598a63d5842b4b",
+    "1464e6ab3c9929cd",
+    "1531462b9ee34eea",
+    "179431d7e601363e",
+    "203bdcf382dae9b6",
+    "2156e6b5f4921e5f",
+    "236341e53463f557",
+    "24f46de64667c817",
+    "26b0859bdfa25aa8",
+    "28c89ced9182225b",
+    "2969431187459b54",
+    "29af7847bd849e7e",
+    "2ba36060939ba5e6",
+    "2ebab635ca4e77f9",
+    "2f4d995704ff91f5",
+    "31545125043966e5",
+    "33ab48b4d7ce9053",
+    "3480cf4d1b2f6a52",
+    "355ba404bd5f9941",
+    "3566e542e053e061",
+    "36fa783d97c6395c",
+    "37acaaa6aae05dfd",
+    "38c2e35387446b53",
+    "38f035fb73044825",
+    "3966222f1a49eb82",
+    "39b35fac695392a0",
+    "3a12240d03408872",
+    "3c128cfef9985478",
+    "3fde6f78b362a6c4",
+    "423720c23020e4ef",
+    "43ee4dd41a45c96c",
+    "44a3ace3d377f0e4",
+    "46fb72b0834e5417",
+    "49443d79be4fe75a",
+    "49511e5a5d7f0d67",
+    "4aa25cbe3526fd35",
+    "4b0d46cb82155265",
+    "4b8029b34bb4e2e8",
+    "4c1d60d9b6044478",
+    "4c3e95235ab3e7f4",
+    "4cda0b0f75837a4a",
+    "4f9a797933ec4e58",
+    "5163fdad884e1ba1",
+    "5285f7aa43a3674b",
+    "564f16e3cf018221",
+    "56b03e46d9848972",
+    "58d8805d882bf623",
+    "5aec54b91c8bc7b7",
+    "5e2a2770d16829b2",
+    "5e94d6cf26be1ffd",
+    "5ea65ce848b3879d",
+    "5fb1f0686ad6a39c",
+    "6608c825ce7f7692",
+    "6739df25c24e549f",
+    "69bcf7c6c92b0c4b",
+    "6b3b596fa2e83aba",
+    "6bb27f5822ac5780",
+    "6fe01a05106fa3d1",
+    "73481aea600f1c9e",
+    "73c15111e46d3093",
+    "741ef48de8b8084a",
+    "74710481d5e8d663",
+    "74c9cde2f4a36239",
+    "7506b769bc94fa01",
+    "768f588ef2510e71",
+    "76e3c64bd318b270",
+    "77a38d65ee3e8e61",
+    "77b04a61ebf57052",
+    "786e7239227a0873",
+    "78af83ef5f7c10df",
+    "79900a9ed9381b1a",
+    "7a164568da9d3768",
+    "7c456ada6b59efa3",
+    "7cb6feb4f2a3dbf0",
+    "7f75fd2b8dbc1d5b",
+    "85ff65b1adbba72c",
+    "8c2fdf59e7be4308",
+    "97a61f432534ed74",
+    "9aadb9bcc0836530",
+    "b2b77435ed079354",
+    "d317e145ec95218d",
+    "ed8c7acc366ce1cd",
+    "f40ea14a4e643693",
+    "fbd8b23095708936"
+  ],
+  "dex_callsites": [
+    {
+      "id": "7a164568da9d3768",
+      "instruction": "03a762: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "3566e542e053e061",
+      "instruction": "03a772: 7120 7400 1000                         |000d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "74710481d5e8d663",
+      "instruction": "03a782: 7120 7400 1000                         |0015: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "24f46de64667c817",
+      "instruction": "03a792: 7120 7400 1000                         |001d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "10598a63d5842b4b",
+      "instruction": "03a7a2: 7120 7400 1000                         |0025: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "086464360c64094a",
+      "instruction": "03a7b2: 7120 7400 1000                         |002d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5aec54b91c8bc7b7",
+      "instruction": "03a7c2: 7120 7400 1000                         |0035: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "0949ca2b2805104b",
+      "instruction": "03a7d2: 7120 7400 1000                         |003d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "6608c825ce7f7692",
+      "instruction": "03a7e2: 7120 7400 1000                         |0045: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "741ef48de8b8084a",
+      "instruction": "03a7f2: 7120 7400 1000                         |004d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "2f4d995704ff91f5",
+      "instruction": "03a802: 7120 7400 1000                         |0055: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "56b03e46d9848972",
+      "instruction": "03a812: 7120 7400 1000                         |005d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "7cb6feb4f2a3dbf0",
+      "instruction": "03a822: 7120 7400 1000                         |0065: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "3a12240d03408872",
+      "instruction": "03ab52: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "2ebab635ca4e77f9",
+      "instruction": "03ab68: 7120 7400 1000                         |0010: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "36fa783d97c6395c",
+      "instruction": "03ab7a: 7120 7400 2100                         |0019: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4cda0b0f75837a4a",
+      "instruction": "03ab98: 7120 7400 1000                         |0028: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "355ba404bd5f9941",
+      "instruction": "03abae: 7120 7400 1000                         |0033: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "0cb90affd43330c4",
+      "instruction": "03abcc: 7120 7400 1000                         |0042: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "04a4efaa7e1a97c8",
+      "instruction": "03abe2: 7120 7400 1000                         |004d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4f9a797933ec4e58",
+      "instruction": "03abf4: 7120 7400 2100                         |0056: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "423720c23020e4ef",
+      "instruction": "03ac12: 7120 7400 1000                         |0065: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "79900a9ed9381b1a",
+      "instruction": "03ac24: 7120 7400 2100                         |006e: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "3fde6f78b362a6c4",
+      "instruction": "03ac42: 7120 7400 2100                         |007d: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "76e3c64bd318b270",
+      "instruction": "03ac60: 7120 7400 2100                         |008c: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "46fb72b0834e5417",
+      "instruction": "03ac7e: 7120 7400 2100                         |009b: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "26b0859bdfa25aa8",
+      "instruction": "03a73e: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "69bcf7c6c92b0c4b",
+      "instruction": "03a86c: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4aa25cbe3526fd35",
+      "instruction": "03a87e: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "73481aea600f1c9e",
+      "instruction": "03a896: 7120 7400 1000                         |001d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "7f75fd2b8dbc1d5b",
+      "instruction": "03a8a8: 7120 7400 1000                         |0026: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "49443d79be4fe75a",
+      "instruction": "03a8c0: 7120 7400 1000                         |0032: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "768f588ef2510e71",
+      "instruction": "03a8d2: 7120 7400 1000                         |003b: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "6fe01a05106fa3d1",
+      "instruction": "03a8ea: 7120 7400 1000                         |0047: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5285f7aa43a3674b",
+      "instruction": "03a8fc: 7120 7400 1000                         |0050: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "74c9cde2f4a36239",
+      "instruction": "03a918: 7120 7400 3200                         |005e: invoke-static {v2, v3}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "38f035fb73044825",
+      "instruction": "03a954: 7120 7400 1000                         |007c: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "7506b769bc94fa01",
+      "instruction": "03a966: 7120 7400 1000                         |0085: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5e2a2770d16829b2",
+      "instruction": "03a982: 7120 7400 1000                         |0093: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "1464e6ab3c9929cd",
+      "instruction": "03a9c0: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "31545125043966e5",
+      "instruction": "03a9d2: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "44a3ace3d377f0e4",
+      "instruction": "03aa04: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "2156e6b5f4921e5f",
+      "instruction": "03aa16: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "38c2e35387446b53",
+      "instruction": "03aa48: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "1531462b9ee34eea",
+      "instruction": "03aa5a: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "49511e5a5d7f0d67",
+      "instruction": "03aa8c: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "77b04a61ebf57052",
+      "instruction": "03aa9e: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "101c10d72a1dc4a8",
+      "instruction": "03aad0: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "179431d7e601363e",
+      "instruction": "03aae2: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5163fdad884e1ba1",
+      "instruction": "03ab14: 7120 7400 1000                         |0008: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "28c89ced9182225b",
+      "instruction": "03ab26: 7120 7400 1000                         |0011: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "3966222f1a49eb82",
+      "instruction": "03ad5e: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "39b35fac695392a0",
+      "instruction": "03ad82: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "0986da3b4b3f78b3",
+      "instruction": "03ada6: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4c1d60d9b6044478",
+      "instruction": "03adca: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "203bdcf382dae9b6",
+      "instruction": "03adee: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "33ab48b4d7ce9053",
+      "instruction": "03ae12: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4c3e95235ab3e7f4",
+      "instruction": "03afaa: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "0f0ab1455eabb8db",
+      "instruction": "03afba: 7120 7400 1000                         |000d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "05f595a4d7fdaceb",
+      "instruction": "03afca: 7120 7400 1000                         |0015: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "43ee4dd41a45c96c",
+      "instruction": "03afda: 7120 7400 1000                         |001d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5e94d6cf26be1ffd",
+      "instruction": "03afea: 7120 7400 1000                         |0025: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "73c15111e46d3093",
+      "instruction": "03affa: 7120 7400 1000                         |002d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "6b3b596fa2e83aba",
+      "instruction": "03b00a: 7120 7400 1000                         |0035: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "0ee9b70ea507b97f",
+      "instruction": "03b01a: 7120 7400 1000                         |003d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "3480cf4d1b2f6a52",
+      "instruction": "03b02a: 7120 7400 1000                         |0045: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4b8029b34bb4e2e8",
+      "instruction": "03b03a: 7120 7400 1000                         |004d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "58d8805d882bf623",
+      "instruction": "03b04a: 7120 7400 1000                         |0055: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "4b0d46cb82155265",
+      "instruction": "03b05a: 7120 7400 1000                         |005d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "786e7239227a0873",
+      "instruction": "03b06a: 7120 7400 1000                         |0065: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "78af83ef5f7c10df",
+      "instruction": "03b07a: 7120 7400 1000                         |006d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "77a38d65ee3e8e61",
+      "instruction": "03b08a: 7120 7400 1000                         |0075: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "564f16e3cf018221",
+      "instruction": "03b09a: 7120 7400 1000                         |007d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "6739df25c24e549f",
+      "instruction": "03b0aa: 7120 7400 1000                         |0085: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "6bb27f5822ac5780",
+      "instruction": "03b0ba: 7120 7400 1000                         |008d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "3c128cfef9985478",
+      "instruction": "03b0ca: 7120 7400 1000                         |0095: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "7c456ada6b59efa3",
+      "instruction": "03b0da: 7120 7400 1000                         |009d: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "37acaaa6aae05dfd",
+      "instruction": "03ae82: 7120 7400 2100                         |000d: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "29af7847bd849e7e",
+      "instruction": "03af5a: 7120 7400 1000                         |0005: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "2ba36060939ba5e6",
+      "instruction": "03af6c: 7120 7400 2100                         |000e: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5ea65ce848b3879d",
+      "instruction": "03af7e: 7120 7400 3200                         |0017: invoke-static {v2, v3}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "236341e53463f557",
+      "instruction": "03aec4: 7120 7400 2100                         |000a: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "2969431187459b54",
+      "instruction": "03aee2: 7120 7400 2100                         |0019: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "5fb1f0686ad6a39c",
+      "instruction": "03af20: 7120 7400 2100                         |000a: invoke-static {v1, v2}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    },
+    {
+      "id": "0c362345b0ddbcd8",
+      "instruction": "03ae3a: 7120 7400 1000                         |0007: invoke-static {v0, v1}, Ldev/ujhhgtg/lsparanoid/generated/B2f3048e7f872cd1187ff553c;.db1858504079b7815:(J)Ljava/lang/String; // method@0074"
+    }
+  ],
+  "resource_ids": [
+    "85ff65b1adbba72c",
+    "8c2fdf59e7be4308",
+    "97a61f432534ed74",
+    "9aadb9bcc0836530",
+    "b2b77435ed079354",
+    "d317e145ec95218d",
+    "ed8c7acc366ce1cd",
+    "f40ea14a4e643693",
+    "fbd8b23095708936"
+  ],
+  "scope": "Adjacent const-wide/bridge invokes and public resource tokens; APK contents only",
+  "outcome": "native_abort",
+  "recovered": [],
+  "process_name": "dev.ujhhgtg.lsparanoid.testapp",
+  "apk_backed_vm": true,
+  "android_api": 23,
+  "jni_mocks": [],
+  "guard_patches": [],
+  "spoofed_system_properties": {
+    "ro.build.version.sdk": "35",
+    "ro.build.version.release": "15",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.product.cpu.abilist": "arm64-v8a",
+    "ro.product.model": "Pixel 9",
+    "ro.product.manufacturer": "Google",
+    "ro.kernel.qemu": "0",
+    "ro.debuggable": "0",
+    "ro.secure": "1",
+    "ro.build.type": "user",
+    "ro.build.tags": "release-keys",
+    "ro.build.fingerprint": "google/tokay/tokay:15/AP4A.250205.002/12821496:user/release-keys"
+  },
+  "android_relr_locations": 46,
+  "abort_address": "0x1218df9c",
+  "elapsed_seconds": 0.6394312510019518,
+  "worker_exit_code": 86
+}

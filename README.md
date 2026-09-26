@@ -10,7 +10,10 @@ backend is the default; native protection is enabled explicitly.
 The native backend assigns separate authenticated ciphertext to every selected literal occurrence and
 resource item, rebuilds transformed class constant pools, and generates an AArch64 decoder registered
 through `JNI_OnLoad`. Each protected build invocation uses fresh random entropy. Optional O-MVLL
-hardening targets selected decoder functions. There is no root, debugger, Frida, or LSPosed detection.
+hardening targets selected decoder and verification functions. Native mode now requires APK signature,
+loaded-library integrity, approved-process identity and Android-runtime verification. Failed verification
+calls `abort()` immediately, including inside an injected host. There is no root/Frida/LSPosed blacklist;
+those are legitimate environments for modules.
 
 This increases the work required for static extraction. It cannot keep plaintext secret from an
 attacker controlling the process: decoded Java strings and the native decoder remain observable.
@@ -30,7 +33,7 @@ Make the plugin portal, Google Maven and Maven Central available in `settings.gr
 ```kotlin
 plugins {
     id("com.android.application")
-    id("dev.ujhhgtg.lsparanoid") version "0.12.0"
+    id("dev.ujhhgtg.lsparanoid") version "0.13.0"
 }
 
 android {
@@ -67,6 +70,43 @@ read. A new invocation deliberately changes keys, IDs, bridge names and library 
 cache reuse. Gradle configuration-cache reuse remains supported. `seed` applies to the JVM backend;
 it does not weaken native entropy or make native release output deterministic.
 
+## Native verification (0.13.0)
+
+Native builds require APK Signature Scheme v2. The plugin enables it and derives public SHA-256
+certificate pins from the variant's signing keystore. It never places private signing keys or keystore
+passwords in generated artifacts. For Play app signing or custom variant signing providers, explicitly
+set `signerCertificateSha256` to the **installed APK signer**, not an upload certificate:
+
+```kotlin
+lsparanoid {
+    backend = "native"
+    // Optional override of automatic signing-config certificate discovery:
+    // signerCertificateSha256 = setOf("64 lowercase hex characters")
+    allowedHostCertificates = mapOf(
+        "com.example.host" to setOf("host certificate SHA-256 in hex"),
+    )
+}
+```
+
+Own-app execution is implicit. Every additional injected host needs its package name and certificate
+pins; exact package names and their `:subprocess` forms are accepted. All other applications are rejected.
+Native code discovers APKs from its own mapped library, Android classloader origins, mapped APKs and
+open file descriptors. **No module APK path is passed to the decoder JNI API.** Merely placing an
+untouched, correctly signed APK beside a foreign shell does not authorize that shell.
+
+Verification checks the v2 signature and signed content digests, pinned certificate/SPKI binding,
+authenticated ZIP entry against the loaded nonwritable ELF segments and any extracted `.so`, and the
+host's signer/UID/process identity using fresh system Binder service discovery. PID/UID/JNI/Binder/ART
+and Android properties must be consistent. Known full-Android native translation is supported; basic
+unidbg emulation is not. Environment properties alone are not proof of Android.
+
+Current format limits: v2 must exist, exactly one APK signer, RSA up to 4096 bits or NIST ECDSA,
+SHA-256/SHA-512, and no ZIP64. In-memory module DEX is not authenticated through private ART layouts;
+that path requires an explicitly pinned host plus authenticated module APK/library. Expensive file
+verification happens at load, with bridge/process checks on each decode. These checks cannot stop
+hooks or arbitrary code already executing inside an authorized signed host from observing plaintext,
+and do not make binary patching impossible.
+
 ## Module and injected-process bootstrap
 
 Xposed/Zygisk loading needs an explicit bootstrap under the module classloader:
@@ -95,7 +135,11 @@ LspBootstrap.decode(id)                  // for resource adapter integration
 Extend the module's existing installed-library lookup or Zygisk extraction list with that exact
 filename. Load before executing protected initializers or feature code. Exclude the necessary startup,
 loader, and error-reporting paths with `excludedClassPrefixes`; these exclusions override `@Obfuscate`.
-Do not load every APK `.so` entry indiscriminately. Zygote-time initialization is outside this contract.
+Do not load every APK `.so` entry indiscriminately. Keep a read-only `ParcelFileDescriptor` to the original
+module APK alive for in-memory loaders so native discovery can find it through `/proc/self/fd`; the file
+is still cryptographically verified. Initialize only after Android has bound and named the host application.
+For Zygisk, install the minimal unprotected lifecycle hook first and load the decoder from the
+`LoadedApk.createAppFactory` callback. Zygote/post-specialization-before-binding initialization is rejected.
 
 An explicitly selected JVM development build generates a no-op loader facade so shared integration
 code compiles; resource protection is disabled and resource decoding is unavailable in that backend.
@@ -167,8 +211,9 @@ tokens. See [the runtime contract](runtime/README.md) for details.
 
 ## Optional O-MVLL
 
-The generated policy targets decoder lookup/authentication boundaries and leaves the JNI bootstrap
-and cryptographic core outside control-flow flattening. Use the pinned
+The generated policy flattens decoder lookup, AEAD authentication, guard initialization and APK
+verification, with arithmetic obfuscation on decoder lookup. BearSSL primitives remain unmodified.
+Use the pinned
 [O-MVLL 1.9.1 release](https://github.com/open-obfuscator/o-mvll/releases/tag/1.9.1) compatible with NDK r29.
 Download its Linux NDK archive and verify its published SHA-256 before extracting; the plugin does not
 download or install compiler passes automatically. The explicit setup command installs the pinned
@@ -241,3 +286,23 @@ The project is licensed under [Apache License 2.0](LICENSE.txt), retaining the u
 Michael Rozumyanskiy (2021), LSPosed (2023), and Androidacy (2024). The vendored Monocypher source carries
 its own [license](processor/src/main/resources/nativebackend/monocypher/LICENCE.md) and
 [provenance notes](processor/src/main/resources/nativebackend/monocypher/README.md).
+
+
+## Adversarial regressions
+
+The original codec was demonstrated to disclose all 94 fixture IDs through bare unidbg, a separately
+signed shell APK, and a shell loading the unchanged original APK. The 0.13 guard is tested against
+those same replay paths; reports distinguish a native abort from unsupported emulation or a Java
+loading error. See [historical evidence](artifacts/adversarial/README.md). The extraction utility
+and shell generator have been removed. Native APK parser tests use an independent signer:
+
+```sh
+python3 -m venv build/verifier-venv
+build/verifier-venv/bin/pip install -r tools/verification-requirements.txt
+build/verifier-venv/bin/python tools/test-apk-verifier.py --apk testApp/build/outputs/apk/release/testApp-release.apk
+```
+
+BearSSL's pinned verification subset is vendored with its
+[license and provenance](processor/src/main/resources/nativebackend/guard/vendor/bearssl/README.md).
+CI runs the native verifier tests. The historical extraction harness is no longer included in CI.
+Do not interpret an absent configured emulator/runner as a passed attack test.

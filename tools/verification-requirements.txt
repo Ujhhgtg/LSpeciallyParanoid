@@ -1,0 +1,2 @@
+# Independent signer implementation for the native APK-verifier regression suite.
+cryptography==50.0.1

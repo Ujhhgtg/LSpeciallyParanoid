@@ -63,6 +63,14 @@ jobs:
         -PlspBackend=native -PlspNdkVersion=29.0.14206865
         -PlspOmvllPlugin="$LSP_OMVLL_PLUGIN" -PlspOmvllPythonPath="$LSP_OMVLL_PYTHONPATH"
 
+    - name: Test native APK signature and integrity verification
+      shell: bash
+      run: |
+        python3 -m venv "$RUNNER_TEMP/lsp-verifier"
+        "$RUNNER_TEMP/lsp-verifier/bin/pip" install -r tools/verification-requirements.txt
+        "$RUNNER_TEMP/lsp-verifier/bin/python" tools/test-apk-verifier.py \
+          --apk testApp/build/outputs/apk/release/testApp-release.apk
+
     - name: Run release JNI and resource tests on configured arm64-capable device
       if: ${{ vars.ARM64_ANDROID_SERIAL != '' }}
       working-directory: testApp

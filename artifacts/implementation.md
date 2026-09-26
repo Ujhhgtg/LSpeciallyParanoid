@@ -90,6 +90,14 @@ emulator -avd lsp-api37-16k -port 5580 -no-window -no-audio \
 
 CI uses a configured `ARM64_ANDROID_SERIAL` only when present. An ARM64-capable emulator may be used; absence of a configured device produces an explicit execution-skip notice, not a claim that Android tests ran.
 
+## Subsequent native verification work
+
+Version 0.13.0 adds APK signer/content verification, loaded-library integrity and
+approved Android host verification. See the [adversarial report](adversarial/README.md)
+for measured before/after replay results and remaining limits. The 0.12 measurements
+above are historical; the WeKit integration has since moved to a single modern
+Xposed/Zygisk build through an independent repository refactor.
+
 ## Evidence and remaining validation
 
 - [Host validation log](/home/ujhhgtg/coding/LSpeciallyParanoid/build/lsp-final-validation.log)

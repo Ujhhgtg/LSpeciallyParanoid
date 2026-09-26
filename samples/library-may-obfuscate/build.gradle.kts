@@ -17,5 +17,5 @@ android {
 }
 
 dependencies {
-    implementation("dev.ujhhgtg.lsparanoid:core:0.12.0")
+    implementation("dev.ujhhgtg.lsparanoid:core:0.13.0")
 }

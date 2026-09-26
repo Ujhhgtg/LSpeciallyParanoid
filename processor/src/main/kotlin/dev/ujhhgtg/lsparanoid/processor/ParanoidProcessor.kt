@@ -25,6 +25,7 @@ import dev.ujhhgtg.lsparanoid.processor.commons.closeQuietly
 import dev.ujhhgtg.lsparanoid.processor.commons.createFile
 import dev.ujhhgtg.lsparanoid.processor.logging.getLogger
 import dev.ujhhgtg.lsparanoid.processor.model.Deobfuscator
+import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeVerificationPolicy
 import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeBuildSpec
 import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeGenerator
 import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeStringRegistry
@@ -49,6 +50,7 @@ class ParanoidProcessor(
     private val excludedClassPrefixes: Set<String> = emptySet(),
     private val coverageReport: Path? = null,
     private val requireNativeRuntime: Boolean = false,
+    private val verificationPolicy: NativeVerificationPolicy? = null,
 ) {
 
     private val logger = getLogger()
@@ -98,7 +100,7 @@ class ParanoidProcessor(
                     asmApi
                 ).copyAndPatchClasses(sources.asSequence(), output)
                 if (nativeSpec != null) {
-                    NativeGenerator.generate(nativeSpec, nativeRegistry!!.records() + resourceRecords, requireNotNull(nativeOutput), requireNativeRuntime)
+                    NativeGenerator.generate(nativeSpec, nativeRegistry!!.records() + resourceRecords, requireNotNull(nativeOutput), requireNativeRuntime, verificationPolicy)
                 } else {
                     val deobfuscatorClasses =
                         DeobfuscatorGenerator(

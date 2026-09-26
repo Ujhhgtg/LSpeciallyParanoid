@@ -29,6 +29,12 @@ The release fixture is minified and signed with the debug test key. Its fixture-
 
 For a cold timing measurement, invoke only `NativePerformanceTest` in a fresh instrumentation process. Running it after another test may record `cold_load=false`.
 
-The JVM backend remains available with `-PlspBackend=jvm` for compatibility builds; native-specific runtime tests are intended for the native backend. No detection is enabled.
+The JVM backend remains available with `-PlspBackend=jvm` for compatibility builds; native-specific runtime tests are intended for the native backend. Native APK, caller-process and Android-environment verification is mandatory; failures abort.
 
 Run `tools/verify-protected-apk.py` from the root to inspect sentinels, ELF exports, stripping and 16 KiB alignment. Configuration-cache reuse must still produce fresh randomized native output on every invocation. Test and coverage reports are under this build's `build/reports` directory.
+
+
+`IntegrityProbeActivity` runs in `:integrity_probe` and changes only the extracted library's GNU build-id
+note while retaining the authentic signed APK. It is an isolated negative test: the expected outcome is
+native SIGABRT with the module-integrity rejection message, not a Java loading error. It is never part of
+the production runtime module.
