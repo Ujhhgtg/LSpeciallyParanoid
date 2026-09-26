@@ -19,9 +19,22 @@ package dev.ujhhgtg.lsparanoid.plugin
 
 import com.android.build.api.variant.Variant
 
+/** Native protection is explicit so JVM-only consumers and desktop tooling remain usable. */
 open class LSParanoidExtension {
     var seed: Int? = null
     var classFilter: ((className: String) -> Boolean)? = null
     var includeDependencies: Boolean = false
     var variantFilter: (Variant) -> Boolean = { true }
+    var backend: String = "jvm"
+    var automaticLoading: Boolean = true
+    var nativeNdkVersion: String = "29.0.14206865"
+    var omvllPlugin: String? = null
+    var omvllPythonPath: String? = null
+    /** Explicit resource identities (string/name, plurals/name, array/name) or glob patterns. */
+    var resourceIncludes: Set<String> = emptySet()
+    var resourceExcludes: Set<String> = emptySet()
+    /** Acknowledges that selected resources are only read through the decoding resource context. */
+    var wrappedResourceAccess: Boolean = false
+    /** Hard exclusions also override @Obfuscate; use for code executed before native bootstrap. */
+    var excludedClassPrefixes: Set<String> = emptySet()
 }

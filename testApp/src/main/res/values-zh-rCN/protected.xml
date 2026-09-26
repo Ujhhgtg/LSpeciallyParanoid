@@ -1,0 +1,4 @@
+<resources>
+    <string name="native_greeting">原生你好 %1$s</string>
+    <plurals name="native_files"><item quantity="other">%d 个文件</item></plurals>
+</resources>

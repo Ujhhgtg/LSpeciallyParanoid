@@ -92,8 +92,7 @@ class StringConstantsClassPatcher(
       isStaticInitializerPatched = true
       return object : GeneratorAdapter(api, visitor, access, name, desc) {
         override fun visitCode() {
-          logger.info("{}:", configuration.container.internalName)
-          logger.info("  Patching <clinit>...")
+          logger.debug("Patching <clinit> in {}", configuration.container.internalName)
           super.visitCode()
           for ((field, value) in configuration.constantStringsByFieldName) {
             push(value)

@@ -26,7 +26,7 @@ import java.util.zip.ZipException
 internal fun JarOutputStream.createFile(name: String, data: ByteArray) {
     val logger = getLogger()
     try {
-        putNextEntry(JarEntry(name.replace(File.separatorChar, '/')))
+        putNextEntry(JarEntry(name.replace(File.separatorChar, '/')).apply { time = 0L })
         write(data)
     } catch (e: ZipException) {
         // it's normal to have duplicated files in META-INF or module-info. do not throw exceptions then.
@@ -42,7 +42,7 @@ internal fun JarOutputStream.createFile(name: String, data: ByteArray) {
 
 internal fun JarOutputStream.createDirectory(name: String) {
     try {
-        putNextEntry(JarEntry(name.replace(File.separatorChar, '/')))
+        putNextEntry(JarEntry(name.replace(File.separatorChar, '/')).apply { time = 0L })
     } catch (ignored: ZipException) {
         // it's normal that the directory already exists
     } finally {

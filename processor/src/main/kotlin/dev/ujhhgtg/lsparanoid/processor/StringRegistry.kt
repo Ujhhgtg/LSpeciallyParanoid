@@ -26,8 +26,8 @@ import java.io.FileOutputStream
 import java.io.DataInputStream
 import java.io.FileInputStream
 
-interface StringRegistry : Closeable {
-  fun registerString(string: String): Long
+interface StringRegistry : Closeable, StringRegistrar {
+  override fun registerString(string: String): Long
 
   @Deprecated("Use streamChunks for better memory efficiency", ReplaceWith("streamChunks(consumer)"))
   fun getAllChunks(): List<String>

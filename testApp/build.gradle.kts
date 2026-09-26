@@ -1,10 +1,18 @@
 plugins {
     id("com.android.application") version "9.4.1"
-    id("dev.ujhhgtg.lsparanoid") version "0.11.0"
+    id("dev.ujhhgtg.lsparanoid") version "0.12.0"
 }
 
 lsparanoid {
-    // Enable obfuscation for both debug and release to allow testing
+    backend = providers.gradleProperty("lspBackend").orElse("native").get()
+    nativeNdkVersion = providers.gradleProperty("lspNdkVersion").orElse("29.0.14206865").get()
+    omvllPlugin = providers.gradleProperty("lspOmvllPlugin").orNull
+    omvllPythonPath = providers.gradleProperty("lspOmvllPythonPath").orNull
+    if (backend == "native") {
+        resourceIncludes = setOf("string/*", "plurals/*", "array/*")
+        wrappedResourceAccess = true
+    }
+    // Enable protection for both debug and release to exercise JNI and R8.
     variantFilter = { _ -> true }
 }
 
@@ -14,12 +22,14 @@ android {
 
     defaultConfig {
         applicationId = "dev.ujhhgtg.lsparanoid.testapp"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    testBuildType = providers.gradleProperty("lspTestBuildType").orElse("debug").get()
 
     buildTypes {
         debug {
@@ -29,6 +39,8 @@ android {
         release {
             // Enable minification for release to test ProGuard rules
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("debug")
+            testProguardFiles("test-proguard-rules.pro")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,21 +53,12 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    testOptions {
-        managedDevices {
-            localDevices {
-                create("pixel8api35") {
-                    device = "Pixel 8"
-                    apiLevel = 35
-                    systemImageSource = "aosp-atd"
-                }
-            }
-        }
-    }
+
 }
 
 dependencies {
-    implementation("dev.ujhhgtg.lsparanoid:core:0.11.0")
+    implementation("dev.ujhhgtg.lsparanoid:core:0.12.0")
+    implementation("dev.ujhhgtg.lsparanoid:runtime:0.12.0")
 
     // Kotlin stdlib needed for annotations used by lsparanoid
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.4.20")

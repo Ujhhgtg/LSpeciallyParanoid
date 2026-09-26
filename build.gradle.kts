@@ -1,17 +1,17 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinBasePlugin
 
 
 plugins {
     alias(libs.plugins.kotlin) apply false
+    id("com.android.library") version "9.4.1" apply false
     id("com.vanniktech.maven.publish") version "0.37.0" apply false
 }
 
 
 allprojects {
     group = "dev.ujhhgtg.lsparanoid"
-    version = "0.11.0"
+    version = "0.12.0"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {
@@ -20,7 +20,7 @@ allprojects {
         }
     }
 
-    plugins.withType(KotlinBasePlugin::class.java) {
+    plugins.withId("org.jetbrains.kotlin.jvm") {
         extensions.configure(KotlinJvmProjectExtension::class.java) {
             jvmToolchain(17)
             // These artifacts end up on consumers' buildscript classpath, where Gradle strictly

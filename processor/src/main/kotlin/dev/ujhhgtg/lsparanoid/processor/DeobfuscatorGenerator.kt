@@ -141,6 +141,12 @@ class DeobfuscatorGenerator(
       val totalLength = stringRegistry.getTotalLength()
       val charsPerChunk = DeobfuscatorHelper.MAX_CHUNK_LENGTH.toLong()
 
+      // A tableswitch whose high bound is -1 is invalid bytecode, even if never called.
+      if (chunkCount == 0) {
+        throwException(Type.getType(IllegalArgumentException::class.java), "Invalid chunk index")
+        return@newMethod
+      }
+
       val switchLabels = Array(chunkCount) { newLabel() }
       val defaultLabel = newLabel()
       val endLabel = newLabel()

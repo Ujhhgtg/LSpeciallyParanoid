@@ -34,7 +34,7 @@ import java.util.jar.JarOutputStream
 
 class Patcher(
     private val deobfuscator: Deobfuscator,
-    private val stringRegistry: StringRegistry,
+    private val stringRegistry: StringRegistrar,
     private val analysisResult: AnalysisResult,
     private val classRegistry: ClassRegistry,
     private val fileRegistry: FileRegistry,
@@ -97,7 +97,6 @@ class Patcher(
         logger.debug("Patching class {}", name)
         val reader = ClassReader(source.readFile(name))
         val writer = StandaloneClassWriter(
-            reader,
             ClassWriter.COMPUTE_FRAMES,
             classRegistry,
             fileRegistry

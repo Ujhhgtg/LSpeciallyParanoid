@@ -16,9 +16,12 @@ import org.junit.runner.RunWith;
  *
  * This test ensures that:
  * 1. Activities with @Obfuscate annotation can be launched
- * 2. Obfuscated strings can be retrieved via reflection (ensureChunkLoaded)
- * 3. The app doesn't crash with NoSuchMethodException in minified builds
- * 4. Chunk loading works correctly for multiple string accesses
+ * 2. Transformed application methods and initializers retain their string values
+ * 3. Generated decoder calls remain valid in minified builds
+ * 4. Repeated accesses preserve behavior across the selected decoder backend
+ *
+ * Constant field references in this test can be javac-inlined; NativeLiteralTest
+ * separately exercises application methods whose literals must be transformed.
  */
 @RunWith(AndroidJUnit4.class)
 public class ObfuscationTest {
@@ -36,8 +39,7 @@ public class ObfuscationTest {
     @Test
     public void testObfuscatedActivityLaunches() {
         // Launch the activity with obfuscated strings
-        // This will fail with NoSuchMethodException if ProGuard rules are wrong
-        // This will also fail if the activity crashes during onCreate
+        // Exercise protected lifecycle code, including decoder loading and initialization.
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
                 assertNotNull("Activity should not be null", activity);
@@ -216,8 +218,7 @@ public class ObfuscationTest {
 
     @Test
     public void testMultipleObfuscatedStringAccess() {
-        // Test multiple string accesses to ensure chunk loading works correctly
-        // This is important because strings are split into chunks
+        // Check repeated public field reads; method-level decoder checks live in NativeLiteralTest.
         try {
             for (int i = 0; i < 100; i++) {
                 String tag1 = MainActivity.TAG;

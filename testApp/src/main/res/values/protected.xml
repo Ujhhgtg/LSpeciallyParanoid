@@ -1,0 +1,10 @@
+<resources>
+    <string name="native_greeting">LSP_SENTINEL_GREETING %1$s</string>
+    <string name="native_escaped">"  quoted  "\nline\tend</string>
+    <string name="native_styled">Leave <b>styled</b> visible</string>
+    <plurals name="native_files">
+        <item quantity="one">%d native file</item>
+        <item quantity="other">%d native files</item>
+    </plurals>
+    <string-array name="native_array"><item>LSP_SENTINEL_ARRAY</item><item>你好</item><item></item></string-array>
+</resources>

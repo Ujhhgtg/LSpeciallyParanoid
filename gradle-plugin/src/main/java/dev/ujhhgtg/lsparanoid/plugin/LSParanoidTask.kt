@@ -17,65 +17,57 @@
 package dev.ujhhgtg.lsparanoid.plugin
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.Directory
-import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFile
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.*
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.*
 import dev.ujhhgtg.lsparanoid.processor.ParanoidProcessor
-import java.io.BufferedOutputStream
-import java.io.FileOutputStream
+import dev.ujhhgtg.lsparanoid.processor.resources.ResourceBytecodeValidator
+import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeBuildSpec
+import dev.ujhhgtg.lsparanoid.processor.nativebackend.NativeRecordIO
 import java.util.jar.JarOutputStream
-import javax.inject.Inject
 
 @CacheableTask
 abstract class LSParanoidTask : DefaultTask() {
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val jars: ListProperty<RegularFile>
+    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) abstract val jars: ListProperty<RegularFile>
+    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) abstract val dirs: ListProperty<Directory>
+    @get:OutputFile abstract val coverageReport: RegularFileProperty
+    @get:OutputFile abstract val output: RegularFileProperty
+    @get:Classpath abstract val bootClasspath: ListProperty<RegularFile>
+    @get:CompileClasspath abstract var classpath: FileCollection
+    @get:Input abstract val seed: Property<Int>
+    @get:Input @get:Optional abstract var classFilter: ((className: String) -> Boolean)?
+    @get:Input abstract val projectName: Property<String>
+    @get:Input abstract val requireNativeRuntime: Property<Boolean>
+    @get:Input abstract val backend: Property<String>
+    @get:Input abstract val excludedClassPrefixes: SetProperty<String>
+    @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val entropy: RegularFileProperty
+    @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val resourceRecords: RegularFileProperty
+    @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val resourceReport: RegularFileProperty
+    @get:InputFile @get:Optional @get:PathSensitive(PathSensitivity.NONE) abstract val runtimeSymbols: RegularFileProperty
+    @get:Input abstract val applicationNamespace: Property<String>
+    @get:OutputDirectory abstract val nativeSources: DirectoryProperty
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val dirs: ListProperty<Directory>
-
-    @get:OutputFile
-    abstract val output: RegularFileProperty
-
-    @get:Classpath
-    abstract val bootClasspath: ListProperty<RegularFile>
-
-    @get:CompileClasspath
-    abstract var classpath: FileCollection
-
-    @get:Input
-    abstract val seed: Property<Int>
-
-    @get:Input
-    @get:Optional
-    abstract var classFilter: ((className: String) -> Boolean)?
-
-    @get:Input
-    abstract val projectName: Property<String>
-
-    @TaskAction
-    fun taskAction() {
+    @TaskAction fun taskAction() {
         val inputs = jars.get() + dirs.get()
-        FileOutputStream(output.get().asFile).use { fileOut ->
-            BufferedOutputStream(fileOut).use { bufferedOut ->
-                JarOutputStream(bufferedOut).use { jarOutput ->
+        if (resourceReport.isPresent) {
+            ResourceBytecodeValidator.verify(inputs.map { it.asFile.toPath() }, runtimeSymbols.get().asFile.toPath(),
+                resourceReport.get().asFile.toPath(), applicationNamespace.get())
+        }
+        val spec = if (backend.get() == "native") NativeBuildSpec.create(entropy.get().asFile.readBytes(), projectName.get()) else null
+        nativeSources.get().asFile.apply { deleteRecursively(); mkdirs() }
+        val outputFile = output.get().asFile.apply { parentFile.mkdirs() }
+        JarOutputStream(outputFile.outputStream().buffered()).use { jarOutput ->
             ParanoidProcessor(
-                seed = seed.get(),
-                inputs = inputs.map { it.asFile.toPath() },
-                classpath = bootClasspath.get().map { it.asFile.toPath() }
-                    .toSet() + classpath.files.map { it.toPath() },
-                output = jarOutput,
-                projectName = projectName.get(),
-                classFilter = classFilter
+                seed = seed.get(), inputs = inputs.map { it.asFile.toPath() },
+                classpath = bootClasspath.get().map { it.asFile.toPath() }.toSet() + classpath.files.map { it.toPath() },
+                output = jarOutput, projectName = projectName.get(), classFilter = classFilter,
+                nativeSpec = spec, nativeOutput = nativeSources.get().asFile.toPath(),
+                resourceRecords = if (spec != null && resourceRecords.isPresent) NativeRecordIO.read(resourceRecords.get().asFile, spec) else emptyList(),
+                requireNativeRuntime = requireNativeRuntime.get(),
+                excludedClassPrefixes = excludedClassPrefixes.get(), coverageReport = coverageReport.get().asFile.toPath(),
             ).process()
-                }
-            }
         }
     }
 }

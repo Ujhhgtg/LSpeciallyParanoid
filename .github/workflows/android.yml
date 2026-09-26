@@ -8,68 +8,109 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux, x64]
 
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK 17
+
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'temurin'
 
-    - name: Setup gradle
+    - name: Set up Gradle
       uses: gradle/actions/setup-gradle@v4
       with:
         gradle-version: '9.8.0'
         cache-cleanup: 'always'
-        build-scan-publish: true
-        build-scan-terms-of-use-url: "https://gradle.com/help/legal-terms-of-use"
-        build-scan-terms-of-use-agree: "yes"
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-    
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
 
-    - name: Build and publish to Maven Local
-      run: ./gradlew build test publishToMavenLocal --parallel --configuration-cache
-
-    - name: Build samples
+    - name: Resolve Android SDK and pinned toolchain paths
+      shell: bash
       run: |
-          cd samples
-          ./gradlew :application:assembleRelease :application-global-obfuscate:assembleRelease :library:assembleRelease :library-may-obfuscate:assembleRelease :library-obfuscate:assembleRelease --parallel --configuration-cache
+        lsp_sdk="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/Android/Sdk}}"
+        test -d "$lsp_sdk/platforms"
+        echo "ANDROID_HOME=$lsp_sdk" >> "$GITHUB_ENV"
+        echo "ANDROID_SDK_ROOT=$lsp_sdk" >> "$GITHUB_ENV"
+        echo "LSP_NDK=$lsp_sdk/ndk/29.0.14206865" >> "$GITHUB_ENV"
+        echo "LSP_OMVLL_PLUGIN=$HOME/.local/share/lspeciallyparanoid/toolchains/omvll-1.9.1/omvll-ndk.so" >> "$GITHUB_ENV"
+        echo "LSP_OMVLL_PYTHONPATH=$HOME/.local/share/lspeciallyparanoid/toolchains/omvll-1.9.1/Python-3.10.7/Lib" >> "$GITHUB_ENV"
+        chmod +x gradlew samples/gradlew testApp/gradlew
 
-    - name: Build testApp release (verify ProGuard rules)
+    - name: Set up pinned NDK r29 and O-MVLL 1.9.1
+      run: python3 tools/setup-native-toolchain.py --sdk "$ANDROID_SDK_ROOT"
+
+    - name: Verify setup tooling
+      run: python3 -m unittest discover -s tools -p 'test_*.py'
+
+    - name: Test and publish local artifacts
+      run: >-
+        ./gradlew :core:test :processor:test :runtime:testDebugUnitTest
+        :gradle-plugin:validatePlugins publishToMavenLocal --configuration-cache
+
+    - name: Build JVM compatibility samples
+      working-directory: samples
+      run: >-
+        ./gradlew :application:assembleRelease :application-global-obfuscate:assembleRelease
+        :library:assembleRelease :library-may-obfuscate:assembleRelease :library-obfuscate:assembleRelease
+        --configuration-cache
+
+    - name: Build minified native fixture with O-MVLL
+      working-directory: testApp
+      run: >-
+        ./gradlew assembleRelease --configuration-cache
+        -PlspBackend=native -PlspNdkVersion=29.0.14206865
+        -PlspOmvllPlugin="$LSP_OMVLL_PLUGIN" -PlspOmvllPythonPath="$LSP_OMVLL_PYTHONPATH"
+
+    - name: Run release JNI and resource tests on configured arm64-capable device
+      if: ${{ vars.ARM64_ANDROID_SERIAL != '' }}
+      working-directory: testApp
+      env:
+        ANDROID_SERIAL: ${{ vars.ARM64_ANDROID_SERIAL }}
+      shell: bash
       run: |
-          cd testApp
-          ./gradlew assembleRelease --configuration-cache
+        lsp_abis="$("$ANDROID_SDK_ROOT/platform-tools/adb" -s "$ANDROID_SERIAL" shell getprop ro.product.cpu.abilist | tr -d '\r')"
+        case ",$lsp_abis," in *,arm64-v8a,*) ;; *) echo "Configured device cannot load arm64-v8a"; exit 1 ;; esac
+        ./gradlew connectedReleaseAndroidTest --configuration-cache \
+          -PlspBackend=native -PlspNdkVersion=29.0.14206865 -PlspTestBuildType=release \
+          -PlspOmvllPlugin="$LSP_OMVLL_PLUGIN" -PlspOmvllPythonPath="$LSP_OMVLL_PYTHONPATH" \
+          -Pandroid.testInstrumentationRunnerArguments.class=dev.ujhhgtg.lsparanoid.testapp.NativeLiteralTest,dev.ujhhgtg.lsparanoid.testapp.NativeResourceTest
 
-    - name: Enable KVM group permissions
+    - name: Report unavailable device execution
+      if: ${{ vars.ARM64_ANDROID_SERIAL == '' }}
+      shell: bash
       run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+        echo "Android device tests skipped: ARM64_ANDROID_SERIAL is unset. APK/static checks ran; Android JNI execution was not validated by this run." >> "$GITHUB_STEP_SUMMARY"
 
-    - name: Run instrumented tests on managed device
+    - name: Audit final APK sentinels, native exports and alignment
+      shell: bash
       run: |
-          cd testApp
-          ./gradlew pixel8api35DebugAndroidTest -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect --configuration-cache
+        shopt -s nullglob
+        lsp_apks=(testApp/build/outputs/apk/release/*.apk)
+        test "${#lsp_apks[@]}" -eq 1
+        python3 tools/verify-protected-apk.py --ndk "$LSP_NDK" --apk "${lsp_apks[0]}"
 
-    - name: Upload test results
+    - name: Upload test and coverage reports
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-results
-        path: testApp/build/reports/androidTests/
+        path: |
+          core/build/reports/tests/
+          processor/build/reports/tests/
+          runtime/build/reports/tests/
+          testApp/build/reports/androidTests/
+          testApp/build/outputs/androidTest-results/
+          testApp/build/reports/lspeciallyparanoid/
         retention-days: 7
 
-    - name: Upload test APKs
+    - name: Upload fixture APKs
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: test-apks
         path: |
-          testApp/build/outputs/apk/debug/*.apk
           testApp/build/outputs/apk/release/*.apk
+          testApp/build/outputs/apk/androidTest/release/*.apk
         retention-days: 7
-      

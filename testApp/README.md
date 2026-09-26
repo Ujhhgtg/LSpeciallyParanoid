@@ -1,146 +1,34 @@
-# LSParanoid Test Application
+# Protected Android fixture
 
-Dedicated test application to verify string obfuscation works correctly in release builds with R8/ProGuard minification enabled.
+This application exercises LSpeciallyParanoid's native backend and Android resource adapter. Expected plaintext lives in the separate instrumentation APK; the target APK is scanned for unique sentinels.
 
-## Purpose
+First run the root build's `publishToMavenLocal` and the explicit `tools/setup-native-toolchain.py` setup. Native mode requires an arm64-capable Android device, API 28+, and a Linux build host.
 
-This test app validates that the ProGuard rules in `core/consumer-rules.pro` are correct and that:
-1. Activities with `@Obfuscate` annotation can be launched without crashes
-2. Obfuscated strings can be retrieved via reflection (`ensureChunkLoaded` method)
-3. The app doesn't crash with `NoSuchMethodException` in minified release builds
-4. Chunk loading works correctly for multiple and concurrent string accesses
+## Release build and tests
 
-## ✅ Build Verification (Automated)
-
-The most important verification is that a minified release APK with obfuscation builds successfully:
+From this directory:
 
 ```bash
-./gradlew :testApp:assembleRelease
+./gradlew assembleRelease assembleReleaseAndroidTest --configuration-cache \
+  -PlspTestBuildType=release \
+  -PlspOmvllPlugin="$HOME/.local/share/lspeciallyparanoid/toolchains/omvll-1.9.1/omvll-ndk.so" \
+  -PlspOmvllPythonPath="$HOME/.local/share/lspeciallyparanoid/toolchains/omvll-1.9.1/Python-3.10.7/Lib"
 ```
 
-**What this proves:**
-- LSParanoid obfuscation is applied to all `@Obfuscate` annotated classes
-- R8 minification runs without errors
-- ProGuard consumer rules from `core/consumer-rules.pro` are correct
-- The `ensureChunkLoaded` method and deobfuscation infrastructure are preserved
+To execute on an explicitly chosen device, replace the build tasks with `connectedReleaseAndroidTest` and set `ANDROID_SERIAL`. An x86_64 AVD can be used only if its advertised ABI list includes `arm64-v8a` and a native bridge is available. The former default x86 ATD managed-device setup is not a valid native-backend test target.
 
-**Output:** `testApp/build/outputs/apk/release/testApp-release-unsigned.apk` (~20KB)
+The release fixture is minified and signed with the debug test key. Its fixture-only keep rules retain APIs, resource IDs and Kotlin runtime paths referenced from the separate test APK. They are not production plugin consumer rules.
 
-✅ **Status**: Successfully tested - release APK builds without errors
+## Coverage
 
-## Running Instrumented Tests
+- Transformed literal methods, constant fields, Unicode, NULs, lone surrogates, duplicate occurrences and a long string.
+- Native registration and loading after R8.
+- Resource configuration selection, plural selection, formatting after decoding, arrays, defaults, styled-value exclusion and framework-resource passthrough.
+- Invalid IDs and ordinary concurrent access.
+- Informational small-registry cold-load/warm-call timing in `NativePerformanceTest`; no device-dependent threshold.
 
-### Prerequisites
+For a cold timing measurement, invoke only `NativePerformanceTest` in a fresh instrumentation process. Running it after another test may record `cold_load=false`.
 
-- Android SDK installed with API 34+ system images
-- At least 5GB free disk space (for system image downloads)
-- Working emulator or physical device
+The JVM backend remains available with `-PlspBackend=jvm` for compatibility builds; native-specific runtime tests are intended for the native backend. No detection is enabled.
 
-### Quick Test (Gradle Managed Device - Headless)
-
-Run all tests on a managed emulator (Android 14, API 34):
-
-```bash
-./gradlew :testApp:pixel6api34DebugAndroidTest \
-  -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
-```
-
-**Note**: First run downloads ~500MB AOSP ATD system image.
-
-### On Physical Device or Connected Emulator
-
-```bash
-# Debug build (no minification, tests obfuscation only)
-./gradlew :testApp:connectedDebugAndroidTest
-
-# Release build (full minification + obfuscation)
-./gradlew :testApp:connectedReleaseAndroidTest
-```
-
-### With Display (For Debugging)
-
-To see the emulator while tests run:
-
-```bash
-./gradlew :testApp:pixel6api34DebugAndroidTest --enable-display
-```
-
-## CI/CD Usage
-
-For GitHub Actions or other CI environments:
-
-```bash
-# Build verification (no emulator needed)
-./gradlew :testApp:assembleRelease
-
-# Full instrumented tests (requires emulator)
-./gradlew :testApp:pixel6api34DebugAndroidTest \
-  -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect
-```
-
-## Test Configuration
-
-- **Managed Device**: Pixel 6 API 34 (Android 14)
-- **System Image**: AOSP ATD (Automated Test Device) optimized for headless CI
-- **Build Types**:
-  - Debug: Obfuscation enabled, no minification (faster tests)
-  - Release: Full minification + obfuscation (production-like)
-- **Test Framework**: AndroidX Test + JUnit4 + Espresso
-
-## What Gets Tested
-
-### ObfuscationTest.java
-
-1. **testApplicationContext**: Verifies basic app initialization with obfuscated code
-2. **testObfuscatedActivityLaunches**: Tests activity with multiple obfuscated string constants
-3. **testObfuscatedUtilityClass**: Tests static utility class with obfuscated strings
-4. **testMultipleObfuscatedStringAccess**: Validates chunk loading with 100+ repeated accesses
-5. **testConcurrentStringAccess**: Tests thread safety with 10 threads × 50 accesses each
-
-## Build Outputs
-
-After running tests, check:
-- **Debug APK**: `testApp/build/outputs/apk/debug/testApp-debug.apk`
-- **Release APK**: `testApp/build/outputs/apk/release/testApp-release-unsigned.apk`
-- **ProGuard mapping**: `testApp/build/outputs/mapping/release/mapping.txt`
-- **Test results**: `testApp/build/reports/androidTests/`
-
-## Troubleshooting
-
-### NoSuchMethodException in Release Build
-
-If you see `NoSuchMethodException: m32.ensureChunkLoaded [int]`:
-- The ProGuard patterns in `core/consumer-rules.pro` don't match generated code
-- Verify the pattern is `**.Deobfuscator` (NOT `**.Deobfuscator$**`)
-- Check consumer rules are applied: examine the mapping file
-
-### Managed Device Won't Start
-
-- Ensure Android SDK includes API 34 system images
-- First run downloads system image (500MB+, several minutes)
-- Requires at least 5GB free disk space
-- Use `--info` flag for detailed output
-
-### R8 Compilation Errors
-
-If R8 fails with missing class warnings:
-- Check `testApp/build/outputs/mapping/debugAndroidTest/missing_rules.txt`
-- Add `-dontwarn` rules to `testApp/proguard-rules.pro`
-
-### Tests Pass on Debug but Fail on Release
-
-This indicates a ProGuard configuration issue:
-- R8 is removing obfuscation infrastructure in release builds
-- Check `core/consumer-rules.pro` is in `META-INF/proguard/`
-- Verify rules match actual generated class structure
-
-## Verifying ProGuard Rules
-
-To see what's kept after minification:
-
-```bash
-./gradlew :testApp:assembleRelease
-grep -i deobfuscator testApp/build/outputs/mapping/release/mapping.txt
-```
-
-You should see the Deobfuscator class and `ensureChunkLoaded` method preserved (though renamed).
+Run `tools/verify-protected-apk.py` from the root to inspect sentinels, ELF exports, stripping and 16 KiB alignment. Configuration-cache reuse must still produce fresh randomized native output on every invocation. Test and coverage reports are under this build's `build/reports` directory.

@@ -18,4 +18,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "LSParanoid"
 
-include(":core", ":processor", ":gradle-plugin")
+include(":core", ":processor", ":gradle-plugin", ":runtime")

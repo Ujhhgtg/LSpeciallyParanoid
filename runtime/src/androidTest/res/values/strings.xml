@@ -1,0 +1,15 @@
+<resources>
+    <string name="lsp_test_format">~lsp1:0123456789abcdef0123456789abcdef:8000000000000001~</string>
+    <string name="lsp_test_locale">~lsp1:0123456789abcdef0123456789abcdef:8000000000000002~</string>
+    <string name="lsp_test_host">Host %1$s</string>
+    <string name="lsp_test_other_build">~lsp1:ffffffffffffffffffffffffffffffff:8000000000000001~</string>
+    <string-array name="lsp_test_array">
+        <item>~lsp1:0123456789abcdef0123456789abcdef:8000000000000002~</item>
+        <item>Host</item>
+    </string-array>
+    <plurals name="lsp_test_plural">
+        <item quantity="one">~lsp1:0123456789abcdef0123456789abcdef:8000000000000003~</item>
+        <item quantity="other">~lsp1:0123456789abcdef0123456789abcdef:8000000000000004~</item>
+    </plurals>
+    <integer name="lsp_test_integer">42</integer>
+</resources>

@@ -26,7 +26,7 @@ import org.objectweb.asm.commons.GeneratorAdapter
 
 class StringLiteralsClassPatcher(
   private val deobfuscator: Deobfuscator,
-  private val stringRegistry: StringRegistry,
+  private val stringRegistry: StringRegistrar,
   asmApi: Int,
   delegate: ClassVisitor,
 ) : ClassVisitor(asmApi, delegate) {
@@ -65,8 +65,7 @@ class StringLiteralsClassPatcher(
       }
 
       private fun replaceStringWithDeobfuscationMethod(string: String) {
-        logger.info("{}.{}{}:", className, name, desc)
-        logger.info("  Obfuscating string literal: \"{}\"", string)
+        logger.debug("Replacing string literal in {}.{}{}", className, name, desc)
         val stringId = stringRegistry.registerString(string)
         push(stringId)
         invokeStatic(deobfuscator.type.toAsmType(), deobfuscator.deobfuscationMethod)
