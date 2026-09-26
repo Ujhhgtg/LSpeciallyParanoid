@@ -9,8 +9,8 @@ lsparanoid {
 
 android {
     namespace = "org.lsposed.paranoid.samples.library_obfuscate"
-    compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    compileSdk = 37
+    buildToolsVersion = "37.0.0"
     defaultConfig {
         minSdk = 24
     }

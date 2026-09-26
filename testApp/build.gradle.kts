@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application") version "9.0.0"
-    id("com.androidacy.lsparanoid") version "0.10.3"
+    id("com.android.application") version "9.4.1"
+    id("com.androidacy.lsparanoid") version "0.11.0"
 }
 
 lsparanoid {
@@ -10,12 +10,12 @@ lsparanoid {
 
 android {
     namespace = "com.androidacy.lsparanoid.testapp"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.androidacy.lsparanoid.testapp"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -55,15 +55,15 @@ android {
 }
 
 dependencies {
-    implementation("com.androidacy.lsparanoid:core:0.10.3")
+    implementation("com.androidacy.lsparanoid:core:0.11.0")
 
     // Kotlin stdlib needed for annotations used by lsparanoid
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.3.0")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:2.4.20")
 
     // Testing dependencies
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test:runner:1.7.0")
+    androidTestImplementation("androidx.test:rules:1.7.0")
+    androidTestImplementation("androidx.test:core:1.7.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }

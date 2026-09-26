@@ -29,8 +29,10 @@ gradlePlugin {
 dependencies {
     implementation(projects.core)
     implementation(projects.processor)
-    implementation(libs.kotlin.api)
-    implementation(libs.agp.api)
+    // Provided at runtime by AGP (which also bundles KGP since AGP 9); shipping them as runtime
+    // dependencies drags duplicate AGP/Kotlin artifacts onto consumers' buildscript classpath.
+    compileOnly(libs.kotlin.api)
+    compileOnly(libs.agp.api)
 }
 
 abstract class GenerateBuildClass : DefaultTask() {
