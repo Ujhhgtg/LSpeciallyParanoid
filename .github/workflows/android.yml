@@ -44,10 +44,10 @@ jobs:
     - name: Verify setup tooling
       run: python3 -m unittest discover -s tools -p 'test_*.py'
 
-    - name: Test and publish local artifacts
+    - name: Test
       run: >-
         ./gradlew :core:test :processor:test :runtime:testDebugUnitTest
-        :gradle-plugin:validatePlugins publishToMavenLocal --configuration-cache
+        :gradle-plugin:validatePlugins --configuration-cache
 
     - name: Build JVM compatibility samples
       working-directory: samples

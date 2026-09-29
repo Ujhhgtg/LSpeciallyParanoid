@@ -1,4 +1,3 @@
-[![Maven Central](https://img.shields.io/maven-central/v/dev.ujhhgtg.lsparanoid/core)](https://central.sonatype.com/artifact/dev.ujhhgtg.lsparanoid/core)
 [![Build](https://github.com/Ujhhgtg/LSpeciallyParanoid/actions/workflows/android.yml/badge.svg)](https://github.com/Ujhhgtg/LSpeciallyParanoid/actions/workflows/android.yml)
 
 # LSpeciallyParanoid
@@ -28,12 +27,29 @@ build uses JDK 21. Native protection for independently published AARs, dynamic f
 is outside the initial supported scope. The JVM backend remains available for existing consumers and
 host/development workflows.
 
-Make the plugin portal, Google Maven and Maven Central available in `settings.gradle.kts`. Apply:
+Artifacts are not published to a Maven repository. Consume the plugin from source as a Gradle
+composite build, for example by adding this repository as a git submodule and including it in
+`settings.gradle.kts`:
+
+```kotlin
+pluginManagement {
+    includeBuild("path/to/LSpeciallyParanoid") // provides the dev.ujhhgtg.lsparanoid plugin
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+includeBuild("path/to/LSpeciallyParanoid") // substitutes dev.ujhhgtg.lsparanoid:core/runtime
+```
+
+The included build requires a JDK 17 toolchain. Apply:
 
 ```kotlin
 plugins {
     id("com.android.application")
-    id("dev.ujhhgtg.lsparanoid") version "0.13.2"
+    id("dev.ujhhgtg.lsparanoid") version "0.13.3"
 }
 
 android {

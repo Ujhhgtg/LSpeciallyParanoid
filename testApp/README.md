@@ -2,7 +2,7 @@
 
 This application exercises LSpeciallyParanoid's native backend and Android resource adapter. Expected plaintext lives in the separate instrumentation APK; the target APK is scanned for unique sentinels.
 
-First run the root build's `publishToMavenLocal` and the explicit `tools/setup-native-toolchain.py` setup. Native mode requires an arm64-capable Android device, API 28+, and a Linux build host.
+The plugin is taken from the root build via `includeBuild("..")`. First run the explicit `tools/setup-native-toolchain.py` setup. Native mode requires an arm64-capable Android device, API 28+, and a Linux build host.
 
 ## Release build and tests
 

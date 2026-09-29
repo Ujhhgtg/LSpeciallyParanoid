@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    id("com.vanniktech.maven.publish")
 }
 
 android {
@@ -25,30 +24,3 @@ dependencies {
 }
 
 tasks.withType<Test>().configureEach { useJUnitPlatform() }
-
-mavenPublishing {
-    configure(com.vanniktech.maven.publish.AndroidSingleVariantLibrary(
-        javadocJar = com.vanniktech.maven.publish.JavadocJar.Empty(),
-        sourcesJar = com.vanniktech.maven.publish.SourcesJar.Sources(),
-        variant = "release",
-    ))
-    publishToMavenCentral(automaticRelease = true)
-    if (project.hasProperty("signingInMemoryKey")) signAllPublications()
-    coordinates("dev.ujhhgtg.lsparanoid", "runtime", version.toString())
-    pom {
-        name = "LSpeciallyParanoid Android resource runtime"
-        description = "Explicit resource decoding adapters for protected Android strings"
-        url = "https://github.com/Ujhhgtg/LSpeciallyParanoid"
-        licenses {
-            license {
-                name = "Apache License 2.0"
-                url = "https://github.com/Ujhhgtg/LSpeciallyParanoid/blob/master/LICENSE.txt"
-            }
-        }
-        developers { developer { name = "Ujhhgtg"; url = "https://github.com/Ujhhgtg" } }
-        scm {
-            connection = "scm:git:https://github.com/Ujhhgtg/LSpeciallyParanoid.git"
-            url = "https://github.com/Ujhhgtg/LSpeciallyParanoid"
-        }
-    }
-}

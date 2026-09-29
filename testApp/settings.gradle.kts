@@ -1,6 +1,6 @@
 pluginManagement {
+    includeBuild("..")
     repositories {
-        mavenLocal()
         gradlePluginPortal()
         google()
         mavenCentral()
@@ -10,10 +10,12 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
-        mavenLocal()
         google()
         mavenCentral()
     }
 }
 
 rootProject.name = "testApp"
+
+// Resolves the dev.ujhhgtg.lsparanoid plugin and artifacts from the parent build (no publishing).
+includeBuild("..")

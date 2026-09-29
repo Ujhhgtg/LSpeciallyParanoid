@@ -5,13 +5,12 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 plugins {
     alias(libs.plugins.kotlin) apply false
     id("com.android.library") version "9.4.1" apply false
-    id("com.vanniktech.maven.publish") version "0.37.0" apply false
 }
 
 
 allprojects {
     group = "dev.ujhhgtg.lsparanoid"
-    version = "0.13.2"
+    version = "0.13.3"
 
     plugins.withType(JavaPlugin::class.java) {
         extensions.configure(JavaPluginExtension::class.java) {
